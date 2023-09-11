@@ -255,6 +255,9 @@ spec:
         operator: in
         values:
         - "false"
+      workspaces:
+      - name: source
+        workspace: workspace
     - name: deprecated-base-image-check
       params:
       - name: BASE_IMAGES_DIGESTS
@@ -273,9 +276,6 @@ spec:
         operator: in
         values:
         - "false"
-      workspaces:
-      - name: test-ws
-        workspace: workspace
     - name: clair-scan
       params:
       - name: image-digest
