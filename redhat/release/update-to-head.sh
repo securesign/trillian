@@ -67,6 +67,7 @@ if [[ -d redhat/patches ]] && [ "$(ls -A redhat/patches)" ]; then
   git apply redhat/patches/*
 fi
 
+
 # RHTAP writes its pipeline files to the root of ${redhat_ref}
 # Fetch those from origin and apply them to the the release branch
 # since we just wiped out our local copy with the upstream ref.
