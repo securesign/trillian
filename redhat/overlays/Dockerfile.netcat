@@ -5,5 +5,6 @@ LABEL io.k8s.description="netcat is a computer networking utility for reading fr
 LABEL io.k8s.display-name="trillian_netcat"
 LABEL io.openshift.tags="trillian netcat trusted-signer"
 LABEL summary="Provides the trillian netcat binary for running trillian netcat"
+LABEL com.redhat.component="trillian-netcat"
 
 RUN microdnf -y install nc
