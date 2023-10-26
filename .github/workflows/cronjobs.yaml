@@ -8,7 +8,10 @@ on:
 jobs:
   check-image-version:
     uses: securesign/actions/.github/workflows/check-image-version.yaml@main
+    strategy:
+      matrix:
+        branch: [master, midstream-v1.5.2]
     with:
-      mainRef: master
+      branch: ${{ matrix.branch }}
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
