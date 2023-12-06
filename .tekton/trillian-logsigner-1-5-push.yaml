@@ -20,6 +20,8 @@ spec:
     value: Dockerfile.logsigner
   - name: git-url
     value: '{{repo_url}}'
+  - name: image-expires-after
+    value: 5d
   - name: output-image
     value: quay.io/redhat-user-workloads/rhtas-tenant/trillian-1-0-gamma/trillian-logsigner-1-5:{{revision}}
   - name: path-context
