@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS TreeHead(
   FOREIGN KEY(TreeId) REFERENCES Trees(TreeId) ON DELETE CASCADE
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS TreeHeadRevisionIdx
+CREATE UNIQUE INDEX TreeHeadRevisionIdx
   ON TreeHead(TreeId, TreeRevision);
 
 -- ---------------------------------------------
@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS SequencedLeafData(
   FOREIGN KEY(TreeId, LeafIdentityHash) REFERENCES LeafData(TreeId, LeafIdentityHash) ON DELETE CASCADE
 );
 
-CREATE INDEX IF NOT EXISTS SequencedLeafMerkleIdx
+CREATE INDEX SequencedLeafMerkleIdx
   ON SequencedLeafData(TreeId, MerkleLeafHash);
 
 CREATE TABLE IF NOT EXISTS Unsequenced(
