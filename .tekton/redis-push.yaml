@@ -27,6 +27,12 @@ spec:
     value: .
   - name: revision
     value: '{{revision}}'
+  - name: build-source-image
+    value: true
+  - name: prefetch-input
+    value: '{"type": "gomod", "path": "."}'
+  - name: hermetic
+    value: "true"
   pipelineSpec:
     finally:
     - name: show-sbom
@@ -364,6 +370,21 @@ spec:
         operator: in
         values:
         - "false"
+    - name: run-unit-test
+      runAfter:
+      - prefetch-dependencies
+      taskRef:
+        params:
+        - name: name
+          value: go-unit-test
+        - name: bundle
+          value: quay.io/securesign/trillian-unit-test@sha256:56557b0303473a81a9326c3f64575941879bd1dc2c15360c7a3cee9eb7ad25ad
+        - name: kind
+          value: task
+        resolver: bundles
+      workspaces:
+        - name: source
+          workspace: workspace
     workspaces:
     - name: workspace
     - name: git-auth
