@@ -6,6 +6,7 @@ COPY examples/deployment/docker/db_server/mysql.cnf /etc/mysql/conf.d/trillian.c
 COPY storage/mysql/schema/storage.sql /docker-entrypoint-initdb.d/storage.sql
 COPY 60-load-db.sh /usr/share/container-scripts/mysql/init/60-load-db.sh
 RUN chmod -R 775 /docker-entrypoint-initdb.d && \
+    chmod -R 1770 /var/lib/mysql && \
     chmod 644 /etc/mysql/conf.d/trillian.cnf && \
     chmod 775 /usr/share/container-scripts/mysql/init/60-load-db.sh
 USER 1001
