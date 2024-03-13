@@ -1,7 +1,7 @@
 FROM registry.redhat.io/rhel9/mariadb-105@sha256:a737c8f150b34c36d22764bb353c1c81cd7cd401d0afed7edd4ab54c6923a425
 
 USER root
-
+#
 COPY examples/deployment/docker/db_server/mysql.cnf /etc/mysql/conf.d/trillian.cnf
 COPY storage/mysql/schema/storage.sql /docker-entrypoint-initdb.d/storage.sql
 COPY 60-load-db.sh /usr/share/container-scripts/mysql/init/60-load-db.sh
