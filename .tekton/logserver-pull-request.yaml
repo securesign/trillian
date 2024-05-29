@@ -8,6 +8,7 @@ metadata:
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-cel-expression: event == "pull_request" && target_branch == "main" && ( "go.mod".pathChanged() || "go.sum".pathChanged() || ".tekton/logserver-pull-request.yaml".pathChanged() || "Dockerfile.logserver.rh".pathChanged() || "cmd/trillian_log_server/***".pathChanged() || "trigger-konflux-builds.txt".pathChanged() )
+    pipelinesascode.tekton.dev/task: "[.tekton/trillian-unit-test.yaml]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: trillian
@@ -382,14 +383,7 @@ spec:
       runAfter:
       - prefetch-dependencies
       taskRef:
-        params:
-        - name: name
-          value: go-unit-test
-        - name: bundle
-          value: quay.io/securesign/trillian-unit-test@sha256:56557b0303473a81a9326c3f64575941879bd1dc2c15360c7a3cee9eb7ad25ad
-        - name: kind
-          value: task
-        resolver: bundles
+        name: go-unit-test
       workspaces:
       - name: source
         workspace: workspace
