@@ -14,6 +14,7 @@ metadata:
     appstudio.openshift.io/application: trillian
     appstudio.openshift.io/component: redis
     pipelines.appstudio.openshift.io/type: build
+    foo: bar
   name: redis-on-pull-request
   namespace: rhtas-tenant
 spec:

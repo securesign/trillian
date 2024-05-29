@@ -13,6 +13,7 @@ metadata:
     appstudio.openshift.io/application: trillian
     appstudio.openshift.io/component: logserver
     pipelines.appstudio.openshift.io/type: build
+    foo: bar
   name: logserver-on-pull-request
   namespace: rhtas-tenant
 spec:
