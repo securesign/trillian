@@ -23,7 +23,7 @@ spec:
   - name: git-url
     value: '{{source_url}}'
   - name: output-image
-    value: quay.io/redhat-user-workloads/rhtas-tenant/trillian/redis:{{revision}}
+    value: quay.io/securesign/trillian-redis:{{revision}}
   - name: path-context
     value: .
   - name: revision
