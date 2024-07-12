@@ -28,7 +28,7 @@ spec:
   - name: build-source-image
     value: true
   - name: prefetch-input
-    value: ''
+    value: '{"type": "gomod", "path": "."}'
   - name: hermetic
     value: true
   pipelineSpec:
@@ -202,10 +202,10 @@ spec:
           value: task
         resolver: bundles
       when:
-      - input: $(params.prefetch-input)
-        operator: notin
+      - input: $(params.hermetic)
+        operator: in
         values:
-        - "{}"
+        - "true"
       workspaces:
       - name: source
         workspace: workspace
