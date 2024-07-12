@@ -28,6 +28,12 @@ spec:
     value: 5d
   - name: dockerfile
     value: Dockerfile.updatetree.rh
+  - name: build-source-image
+    value: true
+  - name: prefetch-input
+    value: ''
+  - name: hermetic
+    value: true
   pipelineSpec:
     finally:
     - name: show-sbom
@@ -202,7 +208,7 @@ spec:
       - input: $(params.prefetch-input)
         operator: notin
         values:
-        - ""
+        - "{}"
       workspaces:
       - name: source
         workspace: workspace
