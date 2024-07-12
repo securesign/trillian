@@ -1,0 +1,32 @@
+FROM registry.access.redhat.com/ubi9/go-toolset@sha256:766687c5dfdc178b60033307127f37866a719996f35965bbf56705f59a92aade AS builder
+ENV APP_ROOT=/opt/app-root
+ENV GOPATH=$APP_ROOT
+ENV CGO_ENABLED=false
+ENV -buildvcs=false
+
+WORKDIR $APP_ROOT/src/
+ADD go.mod go.sum $APP_ROOT/src/
+RUN go mod download
+RUN git config --global --add safe.directory /opt/app-root/src
+
+# Add source code
+ADD ./ $APP_ROOT/src/
+
+RUN go build -v ./cmd/updatetree
+
+# Multi-Stage production build
+FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:29790f898839e92c0554d031856e1770254f27e66af593fc088fbb7d3e5e298e AS deploy
+
+# Retrieve the binary from the previous stage
+COPY --from=builder /opt/app-root/src/updatetree /
+
+LABEL description="Trillian is an implementation of the concepts described in the Verifiable Data Structures white paper, which in turn is an extension and generalisation of the ideas which underpin Certificate Transparency."
+LABEL io.k8s.description="Trillian is an implementation of the concepts described in the Verifiable Data Structures white paper."
+LABEL io.k8s.display-name="updatetree"
+LABEL io.openshift.tags="trillian updatetree trusted-artifact-signer"
+LABEL summary="Provides the trillian updatetree binary for updating merkel trees."
+LABEL com.redhat.component="updatetree"
+LABEL name="updatetree"
+
+# Set the binary as the entrypoint of the container
+ENTRYPOINT ["/updatetree"]
