@@ -20,6 +20,9 @@ FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:29790f898839e92c0554d031
 # Retrieve the binary from the previous stage
 COPY --from=builder /opt/app-root/src/createtree /
 
+# Add license file
+COPY LICENSE /licenses/LICENSE
+
 LABEL description="Trillian is an implementation of the concepts described in the Verifiable Data Structures white paper, which in turn is an extension and generalisation of the ideas which underpin Certificate Transparency."
 LABEL io.k8s.description="Trillian is an implementation of the concepts described in the Verifiable Data Structures white paper."
 LABEL io.k8s.display-name="createtree"
@@ -27,6 +30,9 @@ LABEL io.openshift.tags="trillian createtree trusted-artifact-signer"
 LABEL summary="Provides the trillian createtree binary for creating merkel trees."
 LABEL com.redhat.component="createtree"
 LABEL name="createtree"
+
+# Do not run as root
+USER 1001
 
 # Set the binary as the entrypoint of the container
 ENTRYPOINT ["/createtree"]
