@@ -1,0 +1,27 @@
+# Provides the Trusted Artifact Signer CLI binaries, createtree and updatetree, from an HTTP server
+
+
+FROM quay.io/redhat-user-workloads/rhtas-tenant/trillian/createtree@sha256:dbba046e55b9fde7c32f56f203f93ad9c731bb7d3a43422f9c9be0cdc893e198 AS createtree
+FROM quay.io/redhat-user-workloads/rhtas-tenant/trillian/updatetree@sha256:024399d8b9e9f8dee31f1fbd7cd696c39e1a9cd2ede5a7ae29f0d51d5d3505c1 AS updatetree
+
+
+FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:82fad27b91361473d919522a01a1198f327230bf8d2b569a8995bdcd6ac7cb94
+
+ENV APP_ROOT=/opt/app-root
+WORKDIR $APP_ROOT/src/
+
+RUN mkdir -p ${APP_ROOT}/src/clients/linux
+
+COPY --from=createtree /createtree      $APP_ROOT/src/clients/linux/createtree
+COPY --from=updatetree /updatetree      $APP_ROOT/src/clients/linux/updatetree
+
+LABEL \
+      com.redhat.component="trusted-artifact-signer-serve-cli-trillian" \
+      name="trusted-artifact-signer-serve-cli-trillian" \
+      version="1.0.0" \
+      summary="Red Hat serves Trusted Artifact Signer CLI binaries, createtree and updatetree" \
+      description="Serves Trusted Artifact Signer CLI binaries, createtree and updatetree" \
+      io.k8s.description="Serves Trusted Artifact Signer CLI binaries, createtree and updatetree" \
+      io.k8s.display-name="Serves Trusted Artifact Signer CLI binaries, createtree and updatetree" \
+      io.openshift.tags="trillian, cli, rhtas, trusted, artifact, signer, sigstore" \
+      maintainer="trusted-artifact-signer@redhat.com"
