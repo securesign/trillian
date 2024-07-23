@@ -22,7 +22,7 @@ spec:
   - name: revision
     value: '{{revision}}'
   - name: output-image
-    value: quay.io/redhat-user-workloads/rhtas-tenant/trillian/createtree:{{revision}}
+    value: quay.io/securesign/trillian-createtree:{{revision}}
   - name: dockerfile
     value: Dockerfile.createtree.rh
   - name: build-source-image
