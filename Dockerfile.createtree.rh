@@ -22,7 +22,7 @@ RUN go mod download && \
     gzip createtree-windows-amd64.exe
 
 # Multi-Stage production build
-FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:73f7dcacb460dad137a58f24668470a5a2e47378838a0190eef0ab532c6e8998 AS deploy
+FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:efadc50470c32141c257341694c6312234c0700e0407ed2a60c8b5c26b6af6fc AS deploy
 
 # Retrieve the binary from the previous stage
 COPY --from=build-env /opt/app-root/src/createtree /
