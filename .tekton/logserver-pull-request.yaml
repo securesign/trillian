@@ -214,7 +214,7 @@ spec:
         - name: name
           value: buildah-oci-ta
         - name: bundle
-          value: quay.io/redhat-appstudio-tekton-catalog/task-buildah-oci-ta:0.2@sha256:7fe3191706b515bbc2d10402307f9b9c2813819a2655c0085e6e056ba8fa3bad
+          value: quay.io/redhat-appstudio-tekton-catalog/task-buildah-oci-ta:0.2@sha256:04de9884496c6017b878b665e4bce8374168de19aef0b8cc9395c8d3e100f65a
         - name: kind
           value: task
         resolver: bundles
