@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/go-toolset@sha256:2fead14be2734020f98c731fef30cc54e99fe889a53cac97e80f6f043778b567 AS build-env
+FROM registry.access.redhat.com/ubi9/go-toolset@sha256:9cf1e647ac32a45c129d8c7afd3fb53cd1b2665137339598f37dfc9e7ac67ef1 AS build-env
 ENV APP_ROOT=/opt/app-root
 ENV GOPATH=$APP_ROOT
 ENV CGO_ENABLED=false
@@ -22,7 +22,7 @@ RUN go mod download && \
     gzip createtree-windows-amd64.exe
 
 # Multi-Stage production build
-FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:efadc50470c32141c257341694c6312234c0700e0407ed2a60c8b5c26b6af6fc AS deploy
+FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:f5d2c6a1e0c86e4234ea601552dbabb4ced0e013a1efcbfb439f1f6a7a9275b0 AS deploy
 
 # Retrieve the binary from the previous stage
 COPY --from=build-env /opt/app-root/src/createtree /
