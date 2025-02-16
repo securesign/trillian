@@ -1,13 +1,15 @@
 module github.com/google/trillian
 
-go 1.22.7
+go 1.23
+
+toolchain go1.23.6
 
 require (
 	bitbucket.org/creachadair/shell v0.0.8
 	cloud.google.com/go/spanner v1.73.0
 	contrib.go.opencensus.io/exporter/stackdriver v0.13.14
 	github.com/apache/beam/sdks/v2 v2.60.0
-	github.com/cockroachdb/cockroach-go/v2 v2.3.8
+	github.com/cockroachdb/cockroach-go/v2 v2.4.0
 	github.com/fullstorydev/grpcurl v1.9.1
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/go-sql-driver/mysql v1.8.1
@@ -17,7 +19,7 @@ require (
 	github.com/google/go-licenses/v2 v2.0.0-alpha.1
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/jackc/pgerrcode v0.0.0-20240316143900-6e2875d9b438
-	github.com/jackc/pgx/v5 v5.7.1
+	github.com/jackc/pgx/v5 v5.7.2
 	github.com/letsencrypt/pkcs11key/v4 v4.0.0
 	github.com/lib/pq v1.10.9
 	github.com/prometheus/client_golang v1.20.5
@@ -86,7 +88,7 @@ require (
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
-	github.com/gofrs/flock v0.8.1 // indirect
+	github.com/gofrs/flock v0.12.1 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.1 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
