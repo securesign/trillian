@@ -37,8 +37,8 @@ require (
 	golang.org/x/tools v0.29.0
 	google.golang.org/api v0.214.0
 	google.golang.org/genproto v0.0.0-20241118233622-e639e219e697
-	google.golang.org/genproto/googleapis/api v0.0.0-20241113202542-65e8d215514f
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250227231956-55c901821b1e
+	google.golang.org/genproto/googleapis/api v0.0.0-20250227231956-55c901821b1e
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250219182151-9fdb1cabc7b2
 	google.golang.org/grpc v1.68.1
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.5.1
 	google.golang.org/protobuf v1.36.5
