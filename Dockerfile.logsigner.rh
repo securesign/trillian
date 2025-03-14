@@ -12,7 +12,7 @@ RUN git config --global --add safe.directory /opt/app-root/src
 # Add source code
 ADD ./ $APP_ROOT/src/
 
-RUN go build -v ./cmd/trillian_log_signer
+RUN go build -mod=mod -v ./cmd/trillian_log_signer 
 
 # Multi-Stage production build
 FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:8b314e254e9ab9a7a08b675fcfd3ed66a2943eeda7b26395210d451569976b9b AS deploy

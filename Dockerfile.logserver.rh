@@ -6,7 +6,6 @@ ENV -buildvcs=false
 
 WORKDIR $APP_ROOT/src/
 ADD go.mod go.sum $APP_ROOT/src/
-RUN go mod download
 RUN git config --global --add safe.directory /opt/app-root/src
 
 # Add source code
