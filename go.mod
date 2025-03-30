@@ -9,7 +9,7 @@ require (
 	cloud.google.com/go/spanner v1.77.0
 	contrib.go.opencensus.io/exporter/stackdriver v0.13.14
 	github.com/apache/beam/sdks/v2 v2.61.0
-	github.com/cockroachdb/cockroach-go/v2 v2.3.8
+	github.com/cockroachdb/cockroach-go/v2 v2.4.0
 	github.com/fullstorydev/grpcurl v1.9.2
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/go-sql-driver/mysql v1.8.1
@@ -90,7 +90,7 @@ require (
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
-	github.com/gofrs/flock v0.8.1 // indirect
+	github.com/gofrs/flock v0.12.1 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.2 // indirect
 	github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8 // indirect
