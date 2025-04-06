@@ -155,11 +155,11 @@ require (
 	github.com/xiang90/probing v0.0.0-20221125231312-a49e3df8f510 // indirect
 	go.etcd.io/bbolt v1.3.11 // indirect
 	go.etcd.io/etcd/api/v3 v3.5.19 // indirect
-	go.etcd.io/etcd/client/pkg/v3 v3.5.19 // indirect
+	go.etcd.io/etcd/client/pkg/v3 v3.5.21 // indirect
 	go.etcd.io/etcd/client/v2 v2.305.19 // indirect
 	go.etcd.io/etcd/etcdutl/v3 v3.5.19 // indirect
 	go.etcd.io/etcd/pkg/v3 v3.5.19 // indirect
-	go.etcd.io/etcd/raft/v3 v3.5.19 // indirect
+	go.etcd.io/etcd/raft/v3 v3.5.21 // indirect
 	go.etcd.io/etcd/tests/v3 v3.5.19 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 	go.opentelemetry.io/contrib/detectors/gcp v1.34.0 // indirect
