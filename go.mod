@@ -154,7 +154,7 @@ require (
 	github.com/urfave/cli v1.22.14 // indirect
 	github.com/xiang90/probing v0.0.0-20221125231312-a49e3df8f510 // indirect
 	go.etcd.io/bbolt v1.3.11 // indirect
-	go.etcd.io/etcd/api/v3 v3.5.19 // indirect
+	go.etcd.io/etcd/api/v3 v3.5.21 // indirect
 	go.etcd.io/etcd/client/pkg/v3 v3.5.19 // indirect
 	go.etcd.io/etcd/client/v2 v2.305.19 // indirect
 	go.etcd.io/etcd/etcdutl/v3 v3.5.19 // indirect
@@ -177,7 +177,7 @@ require (
 	go.uber.org/zap v1.27.0 // indirect
 	golang.org/x/exp v0.0.0-20250106191152-7588d65b2ba8 // indirect
 	golang.org/x/mod v0.24.0 // indirect
-	golang.org/x/net v0.37.0 // indirect
+	golang.org/x/net v0.38.0 // indirect
 	golang.org/x/oauth2 v0.27.0 // indirect
 	golang.org/x/text v0.23.0 // indirect
 	golang.org/x/time v0.10.0 // indirect
