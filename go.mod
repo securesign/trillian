@@ -55,7 +55,7 @@ require (
 	cloud.google.com/go/iam v1.4.0 // indirect
 	cloud.google.com/go/longrunning v0.6.4 // indirect
 	cloud.google.com/go/monitoring v1.24.0 // indirect
-	cloud.google.com/go/profiler v0.4.1 // indirect
+	cloud.google.com/go/profiler v0.4.2 // indirect
 	cloud.google.com/go/storage v1.50.0 // indirect
 	cloud.google.com/go/trace v1.11.3 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
