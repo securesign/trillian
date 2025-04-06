@@ -71,7 +71,7 @@ require (
 	github.com/aws/aws-sdk-go v1.51.8 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bgentry/speakeasy v0.1.0 // indirect
-	github.com/bufbuild/protocompile v0.10.0 // indirect
+	github.com/bufbuild/protocompile v0.14.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/census-instrumentation/opencensus-proto v0.4.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
