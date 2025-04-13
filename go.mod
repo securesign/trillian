@@ -12,7 +12,7 @@ require (
 	github.com/cockroachdb/cockroach-go/v2 v2.3.8
 	github.com/fullstorydev/grpcurl v1.9.2
 	github.com/go-redis/redis v6.15.9+incompatible
-	github.com/go-sql-driver/mysql v1.8.1
+	github.com/go-sql-driver/mysql v1.9.2
 	github.com/golang/mock v1.7.0-rc.1
 	github.com/google/btree v1.1.3
 	github.com/google/go-cmp v0.7.0
