@@ -33,7 +33,7 @@ require (
 	go.opencensus.io v0.24.0
 	golang.org/x/crypto v0.36.0
 	golang.org/x/sync v0.12.0
-	golang.org/x/sys v0.31.0
+	golang.org/x/sys v0.32.0
 	golang.org/x/tools v0.31.0
 	google.golang.org/api v0.224.0
 	google.golang.org/genproto v0.0.0-20250122153221-138b5a5a4fd4
@@ -133,7 +133,7 @@ require (
 	github.com/mwitkow/go-proto-validators v0.2.0 // indirect
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
 	github.com/onsi/ginkgo v1.16.5 // indirect
-	github.com/onsi/gomega v1.29.0 // indirect
+	github.com/onsi/gomega v1.36.3 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/opencontainers/image-spec v1.1.0 // indirect
 	github.com/otiai10/copy v1.14.0 // indirect
