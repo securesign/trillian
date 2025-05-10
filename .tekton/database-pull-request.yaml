@@ -7,8 +7,11 @@ metadata:
     build.appstudio.redhat.com/pull_request_number: '{{pull_request_number}}'
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
-    pipelinesascode.tekton.dev/on-cel-expression: event == "pull_request" && target_branch == "main" && 
-      ( "60-load-db.sh".pathChanged() || "examples/deployment/docker/db_server/mysql.cnf".pathChanged() || "storage/mysql/schema/storage.sql".pathChanged() || ".tekton/database-pull-request.yaml".pathChanged() || "Dockerfile.database.rh".pathChanged() || "trigger-konflux-builds.txt".pathChanged() )
+    pipelinesascode.tekton.dev/on-cel-expression: event == "pull_request" && target_branch
+      == "main" && ( "60-load-db.sh".pathChanged() || "examples/deployment/docker/db_server/mysql.cnf".pathChanged()
+      || "storage/mysql/schema/storage.sql".pathChanged() || ".tekton/database-pull-request.yaml".pathChanged()
+      || "Dockerfile.database.rh".pathChanged() || "trigger-konflux-builds.txt".pathChanged()
+      )
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: trillian
@@ -31,25 +34,27 @@ spec:
   - name: revision
     value: '{{revision}}'
   - name: build-source-image
-    value: true
+    value: "true"
   - name: prefetch-input
     value: '{"type": "gomod", "path": "."}'
   - name: hermetic
     value: "true"
   - name: go_unit_test
-    value: true
+    value: "true"
   - name: go_test_command
-    value: go test $(go list ./... | grep -v /storage/ | grep -v /client/ | grep -v /quota/crdbqm )
+    value: go test $(go list ./... | grep -v /storage/ | grep -v /client/ | grep -v
+      /quota/crdbqm )
   pipelineRef:
-    resolver: git
     params:
-      - name: url
-        value: 'https://github.com/securesign/pipelines.git'
-      - name: revision
-        value: 'main'
-      - name: pathInRepo
-        value: 'pipelines/docker-build-oci-ta.yaml'
-  taskRunTemplate: {}
+    - name: url
+      value: https://github.com/securesign/pipelines.git
+    - name: revision
+      value: main
+    - name: pathInRepo
+      value: pipelines/docker-build-oci-ta.yaml
+    resolver: git
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-database
   workspaces:
   - name: git-auth
     secret:
