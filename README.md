@@ -11,7 +11,7 @@
 > and are better supported by [Trillian Tessera](https://github.com/transparency-dev/trillian-tessera).
 > We recommend that any new log operators first try Tessera.
 >
-> Community contributions to Trillian are still welcome!
+> Community contributions to Trillian are still welcome, but please file an issue and/or swing by the Slack first for discussion!
 
  - [Overview](#overview)
  - [Support](#support)
@@ -243,10 +243,10 @@ go mod tidy
 The [`scripts/presubmit.sh`](scripts/presubmit.sh) script runs various tools
 and tests over the codebase.
 
-#### Install [golangci-lint](https://github.com/golangci/golangci-lint#local-installation).
+#### Install [golangci-lint](https://golangci-lint.run/welcome/install/#install-from-sources).
 
 ```bash
-go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.55.1
+go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.1.6
 ```
 
 #### Run code generation, build, test and linters

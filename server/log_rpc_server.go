@@ -107,7 +107,7 @@ func (t *TrillianLogRPCServer) QueueLeaf(ctx context.Context, req *trillian.Queu
 		req.Leaf.LeafIdentityHash = req.Leaf.MerkleLeafHash
 	}
 
-	ret, err := t.registry.LogStorage.QueueLeaves(trees.NewContext(ctx, tree), tree, []*trillian.LogLeaf{req.Leaf}, t.timeSource.Now())
+	ret, err := t.registry.QueueLeaves(trees.NewContext(ctx, tree), tree, []*trillian.LogLeaf{req.Leaf}, t.timeSource.Now())
 	if err != nil {
 		return nil, err
 	}
@@ -118,6 +118,15 @@ func (t *TrillianLogRPCServer) QueueLeaf(ctx context.Context, req *trillian.Queu
 	if len(ret) != 1 {
 		return nil, status.Errorf(codes.Internal, "unexpected count of leaves %d", len(ret))
 	}
+
+	// Mirror the use of this counter in AddSequencedLeaves below.
+	label := strconv.FormatInt(req.LogId, 10)
+	if s := ret[0].Status; s == nil || s.Code == int32(codes.OK) {
+		t.leafCounter.Inc(label, "inserted")
+	} else {
+		t.leafCounter.Inc(label, "skipped")
+	}
+
 	return &trillian.QueueLeafResponse{QueuedLeaf: ret[0]}, nil
 }
 
@@ -147,7 +156,7 @@ func (t *TrillianLogRPCServer) AddSequencedLeaves(ctx context.Context, req *tril
 	hashLeaves(req.Leaves, hasher)
 
 	ctx = trees.NewContext(ctx, tree)
-	leaves, err := t.registry.LogStorage.AddSequencedLeaves(ctx, tree, req.Leaves, t.timeSource.Now())
+	leaves, err := t.registry.AddSequencedLeaves(ctx, tree, req.Leaves, t.timeSource.Now())
 	if err != nil {
 		return nil, err
 	}
@@ -352,7 +361,7 @@ func (t *TrillianLogRPCServer) GetLatestSignedLogRoot(ctx context.Context, req *
 		return nil, err
 	}
 	ctx = trees.NewContext(ctx, tree)
-	tx, err := t.registry.LogStorage.SnapshotForTree(ctx, tree)
+	tx, err := t.registry.SnapshotForTree(ctx, tree)
 	if err != nil {
 		return nil, err
 	}
@@ -634,7 +643,7 @@ func spanFor(ctx context.Context, name string) (context.Context, func()) {
 }
 
 func (t *TrillianLogRPCServer) snapshotForTree(ctx context.Context, tree *trillian.Tree, method string) (storage.ReadOnlyLogTreeTX, error) {
-	tx, err := t.registry.LogStorage.SnapshotForTree(ctx, tree)
+	tx, err := t.registry.SnapshotForTree(ctx, tree)
 	if err != nil && tx != nil {
 		// Special case to handle ErrTreeNeedsInit, which leaves the TX open.
 		// To avoid leaking it make sure it's closed.
