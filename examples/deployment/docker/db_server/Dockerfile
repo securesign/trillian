@@ -1,4 +1,4 @@
-FROM mysql:8.4@sha256:8d643340d4e6a15f7aa51d46b6406f51a2a286c222f871f4d5ec116587c586da
+FROM mysql:9.3@sha256:04768cb63395f56140b4e92cad7c8d9f48dfa181075316e955da75aadca8a7cd
 
 # TODO(roger2hk): Uncomment the below OS-level packages patch command as this is a temporary workaround to bypass the mysql8 gpg key rotation issue.
 # # Patch the OS-level packages and remove unneeded dependencies.
