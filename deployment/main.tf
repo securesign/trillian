@@ -9,12 +9,12 @@ variable "region" {
 
 provider "google" {
   project = var.gcp_project
-  version = "~> 6.29.0"
+  version = "~> 6.39.0"
 }
 
 provider "google-beta" {
   project = var.gcp_project
-  version = "~> 6.31.0"
+  version = "~> 6.39.0"
 }
 
 # Enable required API in the project
