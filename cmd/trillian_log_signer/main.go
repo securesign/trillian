@@ -84,6 +84,7 @@ var (
 	// Profiling related flags.
 	cpuProfile = flag.String("cpuprofile", "", "If set, write CPU profile to this file")
 	memProfile = flag.String("memprofile", "", "If set, write memory profile to this file")
+	maxMsgSize = flag.Int("max_msg_size_bytes", 1024*1024, "Max gRPC message size in bytes")
 )
 
 func main() {
@@ -193,13 +194,15 @@ func main() {
 		}
 		defer pprof.StopCPUProfile()
 	}
-
+	var options []grpc.ServerOption
+	options = append(options, grpc.MaxRecvMsgSize(*maxMsgSize))
 	m := serverutil.Main{
 		RPCEndpoint:      *rpcEndpoint,
 		HTTPEndpoint:     *httpEndpoint,
 		TLSCertFile:      *tlsCertFile,
 		TLSKeyFile:       *tlsKeyFile,
 		StatsPrefix:      "logsigner",
+		ExtraOptions:     options,
 		DBClose:          sp.Close,
 		Registry:         registry,
 		RegisterServerFn: func(s *grpc.Server, _ extension.Registry) error { return nil },

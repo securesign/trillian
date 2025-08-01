@@ -76,6 +76,7 @@ var (
 	// Profiling related flags.
 	cpuProfile = flag.String("cpuprofile", "", "If set, write CPU profile to this file")
 	memProfile = flag.String("memprofile", "", "If set, write memory profile to this file")
+	maxMsgSize = flag.Int("max_msg_size_bytes", 1024*1024, "Max gRPC message size in bytes")
 )
 
 func main() {
@@ -106,6 +107,7 @@ func main() {
 		// Enable the server request counter tracing etc.
 		options = append(options, opts...)
 	}
+	options = append(options, grpc.MaxRecvMsgSize(*maxMsgSize))
 
 	sp, err := storage.NewProvider(*storageSystem, mf)
 	if err != nil {
