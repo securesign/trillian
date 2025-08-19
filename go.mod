@@ -1,8 +1,6 @@
 module github.com/google/trillian
 
-go 1.23.6
-
-toolchain go1.24.1
+go 1.24.6
 
 require (
 	bitbucket.org/creachadair/shell v0.0.8
