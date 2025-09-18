@@ -37,7 +37,8 @@ LABEL io.k8s.display-name="createtree"
 LABEL io.openshift.tags="trillian createtree trusted-artifact-signer"
 LABEL summary="Provides the trillian createtree binary for creating merkel trees."
 LABEL com.redhat.component="createtree"
-LABEL name="createtree"
+LABEL cpe="cpe:/a:redhat:trusted_artifact_signer:1.2::el9"
+LABEL name="rhtas/createtree-rhel9"
 
 COPY --from=build-env /opt/app-root/src/createtree-darwin-amd64.gz /usr/local/bin/createtree-darwin-amd64.gz
 COPY --from=build-env /opt/app-root/src/createtree-windows-amd64.exe.gz /usr/local/bin/createtree-windows-amd64.exe.gz
