@@ -6,7 +6,8 @@ LABEL io.k8s.display-name="redis container image for Red Hat trusted artifact si
 LABEL io.openshift.tags="redis, Red Hat trusted artifact signer."
 LABEL summary="Runs redis in appendonly mode with enablement for external connections by default."
 LABEL com.redhat.component="redis"
-LABEL name="redis"
+LABEL name="rhtas/trillian-redis-rhel9"
+LABEL cpe="cpe:/a:redhat:trusted_artifact_signer:1.2::el9"
 
 USER 1001
 
