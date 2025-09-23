@@ -28,7 +28,6 @@ LABEL io.openshift.tags="trillian-logsigner trusted-signer"
 LABEL summary="Provides the trillian logsigner binary for running trillian logsigner"
 LABEL com.redhat.component="trillian_log_signer"
 LABEL name="rhtas/trillian-logsigner-rhel9"
-LABEL cpe="cpe:/a:redhat:trusted_artifact_signer:1.3::el9"
 
 # Set the binary as the entrypoint of the container
 ENTRYPOINT ["/trillian_log_signer"]
