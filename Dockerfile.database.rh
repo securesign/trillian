@@ -17,4 +17,4 @@ LABEL io.openshift.tags="trillian database trusted-signer"
 LABEL summary="Provides the backing database for running trillian"
 LABEL com.redhat.component="trillian_db"
 LABEL name="rhtas/trillian-database-rhel9"
-LABEL cpe="cpe:/a:redhat:trusted_artifact_signer:1.2::el9"
+
