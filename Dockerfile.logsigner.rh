@@ -20,6 +20,7 @@ FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:7c5495d5fad59aaee12abc3c
 
 # Retrieve the binary from the previous stage
 COPY --from=builder /opt/app-root/src/trillian_log_signer /
+COPY LICENSE /licenses/license.txt
 
 LABEL description="Trillian is an implementation of the concepts described in the Verifiable Data Structures white paper, which in turn is an extension and generalisation of the ideas which underpin Certificate Transparency."
 LABEL io.k8s.description="Trillian is an implementation of the concepts described in the Verifiable Data Structures white paper."
@@ -28,6 +29,8 @@ LABEL io.openshift.tags="trillian-logsigner trusted-signer"
 LABEL summary="Provides the trillian logsigner binary for running trillian logsigner"
 LABEL com.redhat.component="trillian_log_signer"
 LABEL name="rhtas/trillian-logsigner-rhel9"
+
+USER 65532:65532
 
 # Set the binary as the entrypoint of the container
 ENTRYPOINT ["/trillian_log_signer"]
