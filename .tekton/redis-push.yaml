@@ -35,12 +35,14 @@ spec:
     value: ""
   - name: hermetic
     value: "true"
+  - name: fips-check
+    value: "true"
   pipelineRef:
     params:
     - name: url
       value: https://github.com/securesign/pipelines.git
     - name: revision
-      value: main
+      value: add-fips-check-task # Remove before merging
     - name: pathInRepo
       value: pipelines/docker-build-oci-ta.yaml
     resolver: git
