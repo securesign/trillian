@@ -8,6 +8,7 @@ COPY 60-load-db.sh /usr/share/container-scripts/mysql/init/60-load-db.sh
 RUN chmod -R 775 /docker-entrypoint-initdb.d && \
     chmod 644 /etc/mysql/conf.d/trillian.cnf && \
     chmod 775 /usr/share/container-scripts/mysql/init/60-load-db.sh
+COPY LICENSE /licenses/license.txt
 USER 1001
 
 LABEL description="MariaDB is a community-developed, commercially supported fork of the MySQL relational database management system"
