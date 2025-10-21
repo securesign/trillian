@@ -1,32 +1,25 @@
-FROM registry.redhat.io/ubi9/go-toolset:9.7@sha256:380d6de9bbc5a42ca13d425be99958fb397317664bb8a00e49d464e62cc8566c AS build-env
-ENV APP_ROOT=/opt/app-root
-ENV GOPATH=$APP_ROOT
-ENV CGO_ENABLED=1
-ENV -buildvcs=false
-ENV GOEXPERIMENT=strictfipsruntime
+FROM registry.redhat.io/ubi9/go-toolset:9.7 AS build
+ENV APP_ROOT=/opt/app-root \
+    GOPATH=/opt/app-root \
+    CGO_ENABLED=1 \
+    GOFLAGS="-buildvcs=false" \
+    GOEXPERIMENT=strictfipsruntime
 
-WORKDIR $APP_ROOT/src/
-ADD go.mod go.sum $APP_ROOT/src/
-# Add source code
-ADD ./ $APP_ROOT/src/
+WORKDIR $APP_ROOT/src
+ADD go.mod go.sum ./
+ADD ./ ./
 
 RUN go mod download && \
     git config --global --add safe.directory /opt/app-root/src && \
+    go build -mod=mod -o createtree -trimpath ./cmd/createtree && \
+    gzip -k createtree && \
     make -f Build-clis.mak createtree-cross-platform && \
-    cp createtree-linux-amd64 createtree && \
-    gzip createtree-linux-amd64 && \
-    gzip createtree-linux-ppc64le && \
-    gzip createtree-linux-s390x && \
-    gzip createtree-linux-arm64 && \
     gzip createtree-darwin-amd64 && \
     gzip createtree-darwin-arm64 && \
     gzip createtree-windows-amd64.exe
 
 # Multi-Stage production build
 FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:61d5ad475048c2e655cd46d0a55dfeaec182cc3faa6348cb85989a7c9e196483 AS deploy
-
-# Retrieve the binary from the previous stage
-COPY --from=build-env /opt/app-root/src/createtree /
 
 # Add license file
 COPY LICENSE /licenses/LICENSE
@@ -39,24 +32,17 @@ LABEL summary="Provides the trillian createtree binary for creating merkel trees
 LABEL com.redhat.component="createtree"
 LABEL name="rhtas/createtree-rhel9"
 
-COPY --from=build-env /opt/app-root/src/createtree-darwin-amd64.gz /usr/local/bin/createtree-darwin-amd64.gz
-COPY --from=build-env /opt/app-root/src/createtree-windows-amd64.exe.gz /usr/local/bin/createtree-windows-amd64.exe.gz
-COPY --from=build-env /opt/app-root/src/createtree-darwin-arm64.gz /usr/local/bin/createtree-darwin-arm64.gz
-COPY --from=build-env /opt/app-root/src/createtree-linux-arm64.gz /usr/local/bin/createtree-linux-arm64.gz
-COPY --from=build-env /opt/app-root/src/createtree-linux-ppc64le.gz /usr/local/bin/createtree-linux-ppc64le.gz
-COPY --from=build-env /opt/app-root/src/createtree-linux-s390x.gz /usr/local/bin/createtree-linux-s390x.gz
-COPY --from=build-env /opt/app-root/src/createtree-linux-amd64.gz /usr/local/bin/createtree-linux-amd64.gz
-COPY --from=build-env /opt/app-root/src/createtree /usr/local/bin/createtree
+COPY --from=build /opt/app-root/src/createtree /
+COPY --from=build /opt/app-root/src/createtree.gz /usr/local/bin/createtree.gz
+COPY --from=build /opt/app-root/src/createtree-darwin-amd64.gz /usr/local/bin/createtree-darwin-amd64.gz
+COPY --from=build /opt/app-root/src/createtree-windows-amd64.exe.gz /usr/local/bin/createtree-windows-amd64.exe.gz
+COPY --from=build /opt/app-root/src/createtree-darwin-arm64.gz /usr/local/bin/createtree-darwin-arm64.gz
 
-RUN chown root:0 /usr/local/bin/createtree && \
-    chmod g+wx /usr/local/bin/createtree && \
+RUN chown root:0 createtree && chmod g+wx createtree && \
+    chown root:0 /usr/local/bin/createtree.gz && chmod g+wx /usr/local/bin/createtree.gz && \
     chown root:0 /usr/local/bin/createtree-darwin-amd64.gz && chmod g+wx /usr/local/bin/createtree-darwin-amd64.gz && \
     chown root:0 /usr/local/bin/createtree-darwin-arm64.gz && chmod g+wx /usr/local/bin/createtree-darwin-arm64.gz && \
-    chown root:0 /usr/local/bin/createtree-windows-amd64.exe.gz && chmod g+wx /usr/local/bin/createtree-windows-amd64.exe.gz && \
-    chown root:0 /usr/local/bin/createtree-linux-arm64.gz && chmod g+wx /usr/local/bin/createtree-linux-arm64.gz && \
-    chown root:0 /usr/local/bin/createtree-linux-amd64.gz && chmod g+wx /usr/local/bin/createtree-linux-amd64.gz && \
-    chown root:0 /usr/local/bin/createtree-linux-ppc64le.gz && chmod g+wx /usr/local/bin/createtree-linux-ppc64le.gz && \
-    chown root:0 /usr/local/bin/createtree-linux-s390x.gz && chmod g+wx /usr/local/bin/createtree-linux-s390x.gz
+    chown root:0 /usr/local/bin/createtree-windows-amd64.exe.gz && chmod g+wx /usr/local/bin/createtree-windows-amd64.exe.gz
 
 ##Configure home directory
 ENV HOME=/home

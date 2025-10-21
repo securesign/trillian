@@ -41,6 +41,8 @@ spec:
   - name: go_test_command
     value: go test $(go list ./... | grep -v /storage/ | grep -v /client/ | grep -v
       /quota/crdbqm )
+  - name: fips-check
+    value: "true"
   pipelineRef:
     params:
     - name: url
