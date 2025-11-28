@@ -1,33 +1,25 @@
-FROM registry.redhat.io/ubi9/go-toolset:9.7@sha256:380d6de9bbc5a42ca13d425be99958fb397317664bb8a00e49d464e62cc8566c AS build-env
-ENV APP_ROOT=/opt/app-root
-ENV GOPATH=$APP_ROOT
-ENV CGO_ENABLED=1
-ENV -buildvcs=false
-ENV GOEXPERIMENT=strictfipsruntime
+FROM registry.redhat.io/ubi9/go-toolset:9.7 AS build
+ENV APP_ROOT=/opt/app-root \
+    GOPATH=/opt/app-root \
+    CGO_ENABLED=1 \
+    GOFLAGS="-buildvcs=false" \
+    GOEXPERIMENT=strictfipsruntime
 
-WORKDIR $APP_ROOT/src/
-ADD go.mod go.sum $APP_ROOT/src/
-# Add source code
-ADD ./ $APP_ROOT/src/
+WORKDIR $APP_ROOT/src
+ADD go.mod go.sum ./
+ADD ./ ./
 
 RUN go mod download && \
     git config --global --add safe.directory /opt/app-root/src && \
+    go build -mod=mod -o updatetree -trimpath ./cmd/updatetree && \
+    gzip -k updatetree && \
     make -f Build-clis.mak updatetree-cross-platform && \
-    cp updatetree-linux-amd64 updatetree && \
-    gzip updatetree-linux-amd64 && \
-    gzip updatetree-linux-ppc64le && \
-    gzip updatetree-linux-s390x && \
-    gzip updatetree-linux-arm64 && \
     gzip updatetree-darwin-amd64 && \
     gzip updatetree-darwin-arm64 && \
     gzip updatetree-windows-amd64.exe
 
-
 # Multi-Stage production build
 FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:61d5ad475048c2e655cd46d0a55dfeaec182cc3faa6348cb85989a7c9e196483 AS deploy
-
-# Retrieve the binary from the previous stage
-COPY --from=build-env /opt/app-root/src/updatetree /
 
 # Add license file
 COPY LICENSE /licenses/LICENSE
@@ -40,24 +32,17 @@ LABEL summary="Provides the trillian updatetree binary for updating merkel trees
 LABEL com.redhat.component="updatetree"
 LABEL name="rhtas/updatetree-rhel9"
 
-COPY --from=build-env /opt/app-root/src/updatetree-darwin-amd64.gz /usr/local/bin/updatetree-darwin-amd64.gz
-COPY --from=build-env /opt/app-root/src/updatetree-windows-amd64.exe.gz /usr/local/bin/updatetree-windows-amd64.exe.gz
-COPY --from=build-env /opt/app-root/src/updatetree-darwin-arm64.gz /usr/local/bin/updatetree-darwin-arm64.gz
-COPY --from=build-env /opt/app-root/src/updatetree-linux-arm64.gz /usr/local/bin/updatetree-linux-arm64.gz
-COPY --from=build-env /opt/app-root/src/updatetree-linux-ppc64le.gz /usr/local/bin/updatetree-linux-ppc64le.gz
-COPY --from=build-env /opt/app-root/src/updatetree-linux-s390x.gz /usr/local/bin/updatetree-linux-s390x.gz
-COPY --from=build-env /opt/app-root/src/updatetree-linux-amd64.gz /usr/local/bin/updatetree-linux-amd64.gz
-COPY --from=build-env /opt/app-root/src/updatetree /usr/local/bin/updatetree
+COPY --from=build /opt/app-root/src/updatetree /
+COPY --from=build /opt/app-root/src/updatetree.gz /usr/local/bin/updatetree.gz
+COPY --from=build /opt/app-root/src/updatetree-darwin-amd64.gz /usr/local/bin/updatetree-darwin-amd64.gz
+COPY --from=build /opt/app-root/src/updatetree-windows-amd64.exe.gz /usr/local/bin/updatetree-windows-amd64.exe.gz
+COPY --from=build /opt/app-root/src/updatetree-darwin-arm64.gz /usr/local/bin/updatetree-darwin-arm64.gz
 
-RUN chown root:0 /usr/local/bin/updatetree && \
-    chmod g+wx /usr/local/bin/updatetree && \
+RUN chown root:0 updatetree && chmod g+wx updatetree && \
+    chown root:0 /usr/local/bin/updatetree.gz && chmod g+wx /usr/local/bin/updatetree.gz && \
     chown root:0 /usr/local/bin/updatetree-darwin-amd64.gz && chmod g+wx /usr/local/bin/updatetree-darwin-amd64.gz && \
     chown root:0 /usr/local/bin/updatetree-darwin-arm64.gz && chmod g+wx /usr/local/bin/updatetree-darwin-arm64.gz && \
-    chown root:0 /usr/local/bin/updatetree-windows-amd64.exe.gz && chmod g+wx /usr/local/bin/updatetree-windows-amd64.exe.gz && \
-    chown root:0 /usr/local/bin/updatetree-linux-arm64.gz && chmod g+wx /usr/local/bin/updatetree-linux-arm64.gz && \
-    chown root:0 /usr/local/bin/updatetree-linux-amd64.gz && chmod g+wx /usr/local/bin/updatetree-linux-amd64.gz && \
-    chown root:0 /usr/local/bin/updatetree-linux-ppc64le.gz && chmod g+wx /usr/local/bin/updatetree-linux-ppc64le.gz && \
-    chown root:0 /usr/local/bin/updatetree-linux-s390x.gz && chmod g+wx /usr/local/bin/updatetree-linux-s390x.gz
+    chown root:0 /usr/local/bin/updatetree-windows-amd64.exe.gz && chmod g+wx /usr/local/bin/updatetree-windows-amd64.exe.gz
 
 ##Configure home directory
 ENV HOME=/home
