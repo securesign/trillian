@@ -16,6 +16,9 @@ package postgresql
 
 import (
 	"flag"
+	"fmt"
+	"os"
+	"strings"
 	"sync"
 
 	"github.com/google/trillian/monitoring"
@@ -25,7 +28,9 @@ import (
 )
 
 var (
-	postgreSQLURI = flag.String("postgresql_uri", "postgresql:///defaultdb?host=localhost&user=test", "Connection URI for PostgreSQL database")
+	postgreSQLURI        = flag.String("postgresql_uri", "postgresql:///defaultdb?host=localhost&user=test", "Connection URI for PostgreSQL database")
+	postgresqlTLSCA      = flag.String("postgresql_tls_ca", "", "Path to the CA certificate file for PostgreSQL TLS connection ")
+	postgresqlVerifyFull = flag.Bool("postgresql_verify_full", false, "Enable full TLS verification for PostgreSQL (sslmode=verify-full). If false, only sslmode=verify-ca is used.")
 
 	postgresqlMu              sync.Mutex
 	postgresqlErr             error
@@ -76,7 +81,22 @@ func getPostgreSQLDatabaseLocked() (*pgxpool.Pool, error) {
 	if postgresqlDB != nil || postgresqlErr != nil {
 		return postgresqlDB, postgresqlErr
 	}
-	db, err := OpenDB(*postgreSQLURI)
+	uri := *postgreSQLURI
+	if *postgresqlTLSCA != "" {
+		if _, err := os.Stat(*postgresqlTLSCA); err != nil {
+			postgresqlErr = fmt.Errorf("postgresql CA file error: %w", err)
+			return nil, postgresqlErr
+		}
+		sep := "?"
+		if strings.Contains(uri, sep) {
+			sep = "&"
+		}
+		uri = fmt.Sprintf("%s%ssslmode=verify-ca&sslrootcert=%s", uri, sep, *postgresqlTLSCA)
+		if *postgresqlVerifyFull {
+			uri = strings.Replace(uri, "sslmode=verify-ca", "sslmode=verify-full", 1)
+		}
+	}
+	db, err := OpenDB(uri)
 	if err != nil {
 		postgresqlErr = err
 		return nil, err
