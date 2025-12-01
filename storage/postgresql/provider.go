@@ -17,8 +17,8 @@ package postgresql
 import (
 	"flag"
 	"fmt"
+	"net/url"
 	"os"
-	"strings"
 	"sync"
 
 	"github.com/google/trillian/monitoring"
@@ -87,14 +87,25 @@ func getPostgreSQLDatabaseLocked() (*pgxpool.Pool, error) {
 			postgresqlErr = fmt.Errorf("postgresql CA file error: %w", err)
 			return nil, postgresqlErr
 		}
-		sep := "?"
-		if strings.Contains(uri, sep) {
-			sep = "&"
+
+		u, err := url.Parse(uri)
+		if err != nil {
+			postgresqlErr = fmt.Errorf("invalid postgresql URI %q: %w", uri, err)
+			return nil, postgresqlErr
 		}
-		uri = fmt.Sprintf("%s%ssslmode=verify-ca&sslrootcert=%s", uri, sep, *postgresqlTLSCA)
+
+		q := u.Query()
+		q.Set("sslrootcert", *postgresqlTLSCA)
+
 		if *postgresqlVerifyFull {
-			uri = strings.Replace(uri, "sslmode=verify-ca", "sslmode=verify-full", 1)
+			q.Set("sslmode", "verify-full")
+		} else {
+			if q.Get("sslmode") == "" {
+				q.Set("sslmode", "verify-ca")
+			}
 		}
+		u.RawQuery = q.Encode()
+		uri = u.String()
 	}
 	db, err := OpenDB(uri)
 	if err != nil {
