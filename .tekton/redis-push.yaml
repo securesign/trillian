@@ -8,14 +8,14 @@ metadata:
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch
-      == "main" && ( ".tekton/redis-push.yaml".pathChanged() || "Dockerfile.redis.rh".pathChanged()
+      == "release-1.3" && ( ".tekton/redis-push.yaml".pathChanged() || "Dockerfile.redis.rh".pathChanged()
       || "trigger-konflux-builds.txt".pathChanged()  )
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: trillian
-    appstudio.openshift.io/component: redis
+    appstudio.openshift.io/application: tas-components-v1-3
+    appstudio.openshift.io/component: redis-v1-3
     pipelines.appstudio.openshift.io/type: build
-  name: redis-on-push
+  name: redis-v1-3-on-push
   namespace: rhtas-tenant
 spec:
   params:
@@ -56,7 +56,7 @@ spec:
           memory: 3Gi
       name: run-tests
   taskRunTemplate:
-    serviceAccountName: build-pipeline-redis
+    serviceAccountName: build-pipeline-redis-v1-3
   workspaces:
   - name: git-auth
     secret:
