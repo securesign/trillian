@@ -8,16 +8,16 @@ metadata:
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch
-      == "main" && ( "60-load-db.sh".pathChanged() || "examples/deployment/docker/db_server/mysql.cnf".pathChanged()
+      == "release-1.2" && ( "60-load-db.sh".pathChanged() || "examples/deployment/docker/db_server/mysql.cnf".pathChanged()
       || "storage/mysql/schema/storage.sql".pathChanged() || ".tekton/database-push.yaml".pathChanged()
       || "Dockerfile.database.rh".pathChanged() || "trigger-konflux-builds.txt".pathChanged()
       )
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: trillian
-    appstudio.openshift.io/component: database
+    appstudio.openshift.io/application: tas-components-v1-2
+    appstudio.openshift.io/component: database-v1-2
     pipelines.appstudio.openshift.io/type: build
-  name: database-on-push
+  name: database-v1-2-on-push
   namespace: rhtas-tenant
 spec:
   params:
@@ -52,7 +52,7 @@ spec:
       value: pipelines/docker-build-oci-ta.yaml
     resolver: git
   taskRunTemplate:
-    serviceAccountName: build-pipeline-database
+    serviceAccountName: build-pipeline-database-v1-2
   workspaces:
   - name: git-auth
     secret:

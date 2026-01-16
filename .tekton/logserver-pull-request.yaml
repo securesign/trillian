@@ -8,15 +8,15 @@ metadata:
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-cel-expression: event == "pull_request" && target_branch
-      == "main" && ( "go.mod".pathChanged() || "go.sum".pathChanged() || ".tekton/logserver-pull-request.yaml".pathChanged()
+      == "release-1.2" && ( "go.mod".pathChanged() || "go.sum".pathChanged() || ".tekton/logserver-pull-request.yaml".pathChanged()
       || "Dockerfile.logserver.rh".pathChanged() || "cmd/trillian_log_server/***".pathChanged()
       || "trigger-konflux-builds.txt".pathChanged() )
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: trillian
-    appstudio.openshift.io/component: logserver
+    appstudio.openshift.io/application: tas-components-v1-2
+    appstudio.openshift.io/component: logserver-v1-2
     pipelines.appstudio.openshift.io/type: build
-  name: logserver-on-pull-request
+  name: logserver-v1-2-on-pull-request
   namespace: rhtas-tenant
 spec:
   params:
@@ -53,7 +53,7 @@ spec:
       value: pipelines/docker-build-oci-ta.yaml
     resolver: git
   taskRunTemplate:
-    serviceAccountName: build-pipeline-logserver
+    serviceAccountName: build-pipeline-logserver-v1-2
   workspaces:
   - name: git-auth
     secret:

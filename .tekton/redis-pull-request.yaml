@@ -8,14 +8,14 @@ metadata:
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-cel-expression: event == "pull_request" && target_branch
-      == "main" && ( ".tekton/redis-pull-request.yaml".pathChanged() || "Dockerfile.redis.rh".pathChanged()
+      == "release-1.2" && ( ".tekton/redis-pull-request.yaml".pathChanged() || "Dockerfile.redis.rh".pathChanged()
       || "trigger-konflux-builds.txt".pathChanged()  )
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: trillian
-    appstudio.openshift.io/component: redis
+    appstudio.openshift.io/application: tas-components-v1-2
+    appstudio.openshift.io/component: redis-v1-2
     pipelines.appstudio.openshift.io/type: build
-  name: redis-on-pull-request
+  name: redis-v1-2-on-pull-request
   namespace: rhtas-tenant
 spec:
   params:
@@ -47,7 +47,7 @@ spec:
       value: pipelines/docker-build-oci-ta.yaml
     resolver: git
   taskRunTemplate:
-    serviceAccountName: build-pipeline-redis
+    serviceAccountName: build-pipeline-redis-v1-2
   workspaces:
   - name: git-auth
     secret:

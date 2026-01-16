@@ -7,16 +7,16 @@ metadata:
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch
-      == "main"  && ( ".tekton/createtree-push.yaml".pathChanged() || "Dockerfile.createtree.rh".pathChanged()
+      == "release-1.2"  && ( ".tekton/createtree-push.yaml".pathChanged() || "Dockerfile.createtree.rh".pathChanged()
       || "trigger-konflux-builds.txt".pathChanged() || "go.mod".pathChanged() || "go.sum".pathChanged()
       || "cmd/createtree/***".pathChanged() || "client/***".pathChanged() || "Build-clis.mak".pathChanged()
       )
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: trillian
-    appstudio.openshift.io/component: createtree
+    appstudio.openshift.io/application: tas-components-v1-2
+    appstudio.openshift.io/component: createtree-v1-2
     pipelines.appstudio.openshift.io/type: build
-  name: createtree-on-push
+  name: createtree-v1-2-on-push
   namespace: rhtas-tenant
 spec:
   params:
@@ -49,7 +49,7 @@ spec:
       value: pipelines/docker-build-oci-ta.yaml
     resolver: git
   taskRunTemplate:
-    serviceAccountName: build-pipeline-createtree
+    serviceAccountName: build-pipeline-createtree-v1-2
   workspaces:
   - name: workspace
     volumeClaimTemplate:
