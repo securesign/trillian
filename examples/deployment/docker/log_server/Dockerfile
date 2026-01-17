@@ -18,7 +18,7 @@ RUN go install ./cmd/trillian_log_server
 RUN go run github.com/google/go-licenses/v2 save ./cmd/trillian_log_server --save_path /THIRD_PARTY_NOTICES
 
 # Make a minimal image.
-FROM gcr.io/distroless/base-debian12@sha256:f5a3067027c2b322cd71b844f3d84ad3deada45ceb8a30f301260a602455070e
+FROM gcr.io/distroless/base-debian12@sha256:0c70ab46409b94a96f4e98e32e7333050581e75f7038de2877a4bfc146dfc7ce
 
 COPY --from=build /go/bin/trillian_log_server /
 COPY --from=build /THIRD_PARTY_NOTICES /THIRD_PARTY_NOTICES
