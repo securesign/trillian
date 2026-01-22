@@ -60,7 +60,7 @@ spec:
           memory: 3Gi
       name: run-tests
   taskRunTemplate:
-    serviceAccountName: build-pipeline-createtree-v1-3
+    serviceAccountName: build-pipeline-create-tree-v1-3
   workspaces:
   - name: workspace
     volumeClaimTemplate:
