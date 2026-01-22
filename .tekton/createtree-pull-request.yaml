@@ -14,8 +14,8 @@ metadata:
       )
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: tas-components-v1-3
-    appstudio.openshift.io/component: createtree-v1-3
+    appstudio.openshift.io/application: create-tree-v1-3
+    appstudio.openshift.io/component: create-tree-v1-3
     pipelines.appstudio.openshift.io/type: build
   name: createtree-v1-3-on-pull-request
   namespace: rhtas-tenant
@@ -63,7 +63,7 @@ spec:
           memory: 3Gi
       name: run-tests
   taskRunTemplate:
-    serviceAccountName: build-pipeline-createtree-v1-3
+    serviceAccountName: build-pipeline-create-tree-v1-3
   workspaces:
   - name: workspace
     volumeClaimTemplate:
