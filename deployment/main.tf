@@ -9,7 +9,7 @@ variable "region" {
 
 provider "google" {
   project = var.gcp_project
-  version = "~> 7.17.0"
+  version = "~> 7.18.0"
 }
 
 provider "google-beta" {
