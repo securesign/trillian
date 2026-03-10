@@ -44,7 +44,7 @@ RUN chown root:0 createtree && chmod g+wx createtree && \
     chown root:0 /usr/local/bin/createtree-darwin-arm64.gz && chmod g+wx /usr/local/bin/createtree-darwin-arm64.gz && \
     chown root:0 /usr/local/bin/createtree-windows-amd64.exe.gz && chmod g+wx /usr/local/bin/createtree-windows-amd64.exe.gz
 
-##Configure home directory
+# Configure home directory
 ENV HOME=/home
 RUN chgrp -R 0 /${HOME} && chmod -R g=u /${HOME}
 
