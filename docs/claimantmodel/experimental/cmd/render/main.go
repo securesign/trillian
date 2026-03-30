@@ -91,7 +91,7 @@ func getGenerateDocs() string {
 	builder.WriteString("<!--- This content generated with:\n")
 	builder.WriteString("go run github.com/google/trillian/docs/claimantmodel/experimental/cmd/render@master")
 	for _, a := range os.Args[1:] {
-		builder.WriteString(fmt.Sprintf(" %s", a))
+		fmt.Fprintf(&builder, " %s", a)
 	}
 	builder.WriteString("\n-->")
 	return builder.String()
