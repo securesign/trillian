@@ -22,6 +22,8 @@ import (
 	"github.com/google/trillian/monitoring"
 	"github.com/google/trillian/storage"
 	"k8s.io/klog/v2"
+	_ "github.com/jackc/pgx/v5/stdlib"
+	_ "github.com/lib/pq"
 )
 
 const (

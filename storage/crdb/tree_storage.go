@@ -73,7 +73,7 @@ type crdbTreeStorage struct {
 
 // OpenDB opens a database connection to the specified database.
 func OpenDB(dbURL string) (*sql.DB, error) {
-	db, err := sql.Open("postgres", dbURL)
+	db, err := sql.Open("pgx", dbURL)
 	if err != nil {
 		klog.Warningf("Failed to open CRDB database: %v", err)
 		return nil, err
