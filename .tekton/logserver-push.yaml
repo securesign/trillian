@@ -7,15 +7,14 @@ metadata:
     build.appstudio.redhat.com/commit_sha: '{{revision}}'
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
-    pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch
-      == "main" && ( "go.mod".pathChanged() || "go.sum".pathChanged() || ".tekton/logserver-push.yaml".pathChanged()
+    pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch == "release-1.4" && ( "go.mod".pathChanged() || "go.sum".pathChanged() || ".tekton/logserver-push.yaml".pathChanged()
       || "Dockerfile.logserver.rh".pathChanged() || "cmd/trillian_log_server/***".pathChanged()
       || "storage/***".pathChanged()
       || "trigger-konflux-builds.txt".pathChanged() )
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: tas-components
-    appstudio.openshift.io/component: logserver
+    appstudio.openshift.io/application: tas-components-v1-4
+    appstudio.openshift.io/component: logserver-v1-4
     pipelines.appstudio.openshift.io/type: build
   name: logserver-on-push
   namespace: rhtas-tenant
@@ -67,7 +66,7 @@ spec:
           memory: 3Gi
       name: run-tests
   taskRunTemplate:
-    serviceAccountName: build-pipeline-logserver
+    serviceAccountName: build-pipeline-logserver-v1-4
   workspaces:
   - name: git-auth
     secret:

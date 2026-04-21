@@ -7,15 +7,14 @@ metadata:
     build.appstudio.redhat.com/commit_sha: '{{revision}}'
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
-    pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch
-      == "main" && ( ".tekton/updatetree-push.yaml".pathChanged() || "Dockerfile.updatetree.rh".pathChanged()
+    pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch == "release-1.4" && ( ".tekton/updatetree-push.yaml".pathChanged() || "Dockerfile.updatetree.rh".pathChanged()
       || "trigger-konflux-builds.txt".pathChanged() || "go.mod".pathChanged() || "go.sum".pathChanged()
       || "cmd/updatetree/***".pathChanged() || "client/***".pathChanged() || "Build-clis.mak".pathChanged()
       )
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: tas-tools
-    appstudio.openshift.io/component: updatetree
+    appstudio.openshift.io/application: tas-tools-v1-4
+    appstudio.openshift.io/component: updatetree-v1-4
     pipelines.appstudio.openshift.io/type: build
   name: updatetree-on-push
   namespace: rhtas-tenant
@@ -71,7 +70,7 @@ spec:
           memory: 3Gi
       name: run-tests
   taskRunTemplate:
-    serviceAccountName: build-pipeline-updatetree
+    serviceAccountName: build-pipeline-updatetree-v1-4
   workspaces:
   - name: workspace
     volumeClaimTemplate:
