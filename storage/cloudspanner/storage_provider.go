@@ -78,12 +78,6 @@ type cloudSpannerProvider struct {
 
 func configFromFlags() spanner.ClientConfig {
 	r := spanner.ClientConfig{}
-	setUint64IfNotDefault(&r.MaxOpened, *csSessionMaxOpened)
-	setUint64IfNotDefault(&r.MinOpened, *csSessionMinOpened)
-	setUint64IfNotDefault(&r.MaxIdle, *csSessionMaxIdle)
-	setIntIfNotDefault(&r.HealthCheckWorkers, *csSessionHCWorkers)
-	r.TrackSessionHandles = *csSessionTrackHandles
-	r.HealthCheckInterval = *csSessionHCInterval
 	return r
 }
 
@@ -144,14 +138,3 @@ func (s *cloudSpannerProvider) Close() error {
 	return nil
 }
 
-func setIntIfNotDefault(t *int, v int) {
-	if v != 0 {
-		*t = v
-	}
-}
-
-func setUint64IfNotDefault(t *uint64, v uint64) {
-	if v != 0 {
-		*t = v
-	}
-}
