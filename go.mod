@@ -6,7 +6,7 @@ require (
 	bitbucket.org/creachadair/shell v0.0.9
 	cloud.google.com/go/spanner v1.90.0
 	contrib.go.opencensus.io/exporter/stackdriver v0.13.14
-	github.com/apache/beam/sdks/v2 v2.72.0
+	github.com/apache/beam/sdks/v2 v2.68.0
 	github.com/cockroachdb/cockroach-go/v2 v2.4.3
 	github.com/fullstorydev/grpcurl v1.9.3
 	github.com/go-redis/redis v6.15.9+incompatible
@@ -115,7 +115,6 @@ require (
 	github.com/go-openapi/swag/yamlutils v0.26.0 // indirect
 	github.com/gofrs/flock v0.13.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
-	github.com/golang-cz/devslog v0.0.15 // indirect
 	github.com/golang-jwt/jwt/v5 v5.3.1 // indirect
 	github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
@@ -147,6 +146,7 @@ require (
 	github.com/jmespath/go-jmespath v0.4.1-0.20220621161143-b0104c826a24 // indirect
 	github.com/jonboulle/clockwork v0.5.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
+	github.com/klauspost/compress v1.18.5 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.23 // indirect
@@ -170,7 +170,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/prometheus/common v0.67.5 // indirect
 	github.com/prometheus/procfs v0.20.1 // indirect
-	github.com/prometheus/prometheus v0.311.2 // indirect
+	github.com/prometheus/prometheus v0.304.2 // indirect
 	github.com/pseudomuto/protokit v0.2.1 // indirect
 	github.com/sergi/go-diff v1.4.0 // indirect
 	github.com/sirupsen/logrus v1.9.4 // indirect
