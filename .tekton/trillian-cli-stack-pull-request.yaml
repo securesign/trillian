@@ -45,7 +45,7 @@ spec:
       value: pipelines/docker-build-oci-ta.yaml
     resolver: git
   taskRunTemplate:
-    serviceAccountName: build-pipeline-trillian-cli-stack
+    serviceAccountName: build-pipeline-trillian-cli-stack-v1-4
   workspaces:
   - name: git-auth
     secret:
