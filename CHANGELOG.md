@@ -8,7 +8,9 @@
 * Add TLS support for PostgreSQL: https://github.com/google/trillian/pull/3831
   * `--postgresql_tls_ca`: users can provide a CA certificate, that is used to establish a secure communication with PostgreSQL server. 
   * `--postgresql_verify_full`: users can enable full TLS verification for PostgreSQL (sslmode=verify-full). If false, only sslmode=verify-ca is used.
-  * Replace deprecated `golang.org/x/crypto/ed25519` with stdlib `crypto/ed25519` by @JasonPowr
+* Allow unencrypted PEM private key files by @JasonPowr
+  * `ReadPrivateKeyFile` and `FromProto` (via `PEMKeyFile`) now accept an empty password, treating the key as unencrypted. Previously, an empty password was rejected with an error.
+* Replace deprecated `golang.org/x/crypto/ed25519` with stdlib `crypto/ed25519` by @JasonPowr
 
 ## v1.7.2
 
