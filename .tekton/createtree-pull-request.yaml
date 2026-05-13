@@ -16,7 +16,7 @@ metadata:
     appstudio.openshift.io/application: create-tree-v1-4
     appstudio.openshift.io/component: create-tree-v1-4
     pipelines.appstudio.openshift.io/type: build
-  name: createtree-on-pull-request
+  name: create-tree-v1-4-on-pull-request
   namespace: rhtas-tenant
 spec:
   params:
