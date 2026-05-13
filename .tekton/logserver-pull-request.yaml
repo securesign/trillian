@@ -16,7 +16,7 @@ metadata:
     appstudio.openshift.io/application: tas-components-v1-4
     appstudio.openshift.io/component: logserver-v1-4
     pipelines.appstudio.openshift.io/type: build
-  name: logserver-on-pull-request
+  name: logserver-v1-4-on-pull-request
   namespace: rhtas-tenant
 spec:
   params:
