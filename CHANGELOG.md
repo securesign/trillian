@@ -6,22 +6,9 @@
 * Fix leader resignation during a graceful shutdown by @osmman in https://github.com/google/trillian/pull/3790
 * Add optional gRPC message size limit via `--max_msg_size_bytes` flag by @fghanmi in https://github.com/google/trillian/pull/3801
 * Add TLS support for PostgreSQL: https://github.com/google/trillian/pull/3831
-* Replace deprecated `golang.org/x/crypto/ed25519` with stdlib `crypto/ed25519` by @JasonPowr
-
-## v1.7.3
-
-* Recommended go version for development: 1.25
-  * This is the version used by the cloudbuild presubmits. Using a
-    different version can lead to presubmits failing due to unexpected
-    diffs.
-
-### Storage
-
-* PostgreSQL quota manager: Use SELECT(*) instead of ANALYZE up to 10,000 rows instead of 1,000 by @robstradling in https://github.com/google/trillian/pull/3813
-
-* Add TLS support for PostgreSQL by @fghanmi in https://github.com/google/trillian/pull/3831
   * `--postgresql_tls_ca`: users can provide a CA certificate, that is used to establish a secure communication with PostgreSQL server. 
   * `--postgresql_verify_full`: users can enable full TLS verification for PostgreSQL (sslmode=verify-full). If false, only sslmode=verify-ca is used.
+  * Replace deprecated `golang.org/x/crypto/ed25519` with stdlib `crypto/ed25519` by @JasonPowr
 
 ## v1.7.2
 
