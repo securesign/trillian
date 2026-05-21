@@ -1,6 +1,8 @@
 module github.com/google/trillian
 
-go 1.25.0
+go 1.26.0
+
+godebug fips140=auto
 
 require (
 	bitbucket.org/creachadair/shell v0.0.9

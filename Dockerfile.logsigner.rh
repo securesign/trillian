@@ -1,9 +1,8 @@
-FROM registry.redhat.io/ubi9/go-toolset:9.7-1777898790@sha256:59ec4752cf86f0d0dd240b9e29c64d6ee560c28fc986171e126db1db216a246a AS builder
+FROM registry.redhat.io/ubi9/go-toolset:9.8@sha256:355b23fe885cf565c9313a7e98db742df0aec21456244e808942c56489594251 AS builder
 ENV APP_ROOT=/opt/app-root
 ENV GOPATH=$APP_ROOT
-ENV CGO_ENABLED=1
-ENV -buildvcs=false
-ENV GOEXPERIMENT=strictfipsruntime
+ENV CGO_ENABLED=0
+ENV GOFIPS140=v1.0.0
 
 WORKDIR $APP_ROOT/src/
 ADD go.mod go.sum $APP_ROOT/src/
@@ -13,7 +12,7 @@ RUN git config --global --add safe.directory /opt/app-root/src
 # Add source code
 ADD ./ $APP_ROOT/src/
 
-RUN go build -mod=mod -v ./cmd/trillian_log_signer 
+RUN go build -mod=mod -tags no_openssl -v ./cmd/trillian_log_signer
 
 # Multi-Stage production build
 FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:8d0a8fb39ec907e8ca62cdd24b62a63ca49a30fe465798a360741fde58437a23 AS deploy
