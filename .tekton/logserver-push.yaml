@@ -50,7 +50,7 @@ spec:
   pipelineRef:
     params:
     - name: url
-      value: https://github.com/securesign/pipelines.git
+      value: https://github.com/tdalton/CentralisationTest.git
     - name: revision
       value: main
     - name: pathInRepo
