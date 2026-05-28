@@ -56,9 +56,9 @@ spec:
   pipelineRef:
     params:
     - name: url
-      value: https://github.com/tdalton/CentralisationTest.git
+      value: https://github.com/securesign/pipelines.git
     - name: revision
-      value: main
+      value: tdalton/CentralisationTest
     - name: pathInRepo
       value: pipelines/docker-build-multi-platform-oci-ta.yaml
     resolver: git
