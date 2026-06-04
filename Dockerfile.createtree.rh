@@ -1,0 +1,57 @@
+FROM registry.redhat.io/ubi9/go-toolset:9.8@sha256:355b23fe885cf565c9313a7e98db742df0aec21456244e808942c56489594251 AS build
+ENV APP_ROOT=/opt/app-root \
+    GOPATH=/opt/app-root \
+    CGO_ENABLED=0 \
+    GOFIPS140=v1.0.0 \
+    GOFLAGS="-buildvcs=false"
+
+WORKDIR $APP_ROOT/src
+ADD go.mod go.sum ./
+ADD ./ ./
+
+RUN go mod download && \
+    git config --global --add safe.directory /opt/app-root/src && \
+    go build -mod=mod -tags no_openssl -o createtree -trimpath ./cmd/createtree && \
+    gzip -k createtree && \
+    make -f Build-clis.mak createtree-cross-platform && \
+    gzip createtree-darwin-amd64 && \
+    gzip createtree-darwin-arm64 && \
+    gzip createtree-windows-amd64.exe
+
+# Multi-Stage production build
+FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:8d0a8fb39ec907e8ca62cdd24b62a63ca49a30fe465798a360741fde58437a23 AS deploy
+
+# Add license file
+COPY LICENSE /licenses/LICENSE
+
+LABEL description="Trillian is an implementation of the concepts described in the Verifiable Data Structures white paper, which in turn is an extension and generalisation of the ideas which underpin Certificate Transparency."
+LABEL io.k8s.description="Trillian is an implementation of the concepts described in the Verifiable Data Structures white paper."
+LABEL io.k8s.display-name="createtree"
+LABEL io.openshift.tags="trillian createtree trusted-artifact-signer"
+LABEL summary="Provides the trillian createtree binary for creating merkel trees."
+LABEL com.redhat.component="createtree"
+LABEL name="rhtas/createtree-rhel9"
+
+COPY --from=build /opt/app-root/src/createtree /
+COPY --from=build /opt/app-root/src/createtree.gz /usr/local/bin/createtree.gz
+COPY --from=build /opt/app-root/src/createtree-darwin-amd64.gz /usr/local/bin/createtree-darwin-amd64.gz
+COPY --from=build /opt/app-root/src/createtree-windows-amd64.exe.gz /usr/local/bin/createtree-windows-amd64.exe.gz
+COPY --from=build /opt/app-root/src/createtree-darwin-arm64.gz /usr/local/bin/createtree-darwin-arm64.gz
+
+RUN chown root:0 createtree && chmod g+wx createtree && \
+    chown root:0 /usr/local/bin/createtree.gz && chmod g+wx /usr/local/bin/createtree.gz && \
+    chown root:0 /usr/local/bin/createtree-darwin-amd64.gz && chmod g+wx /usr/local/bin/createtree-darwin-amd64.gz && \
+    chown root:0 /usr/local/bin/createtree-darwin-arm64.gz && chmod g+wx /usr/local/bin/createtree-darwin-arm64.gz && \
+    chown root:0 /usr/local/bin/createtree-windows-amd64.exe.gz && chmod g+wx /usr/local/bin/createtree-windows-amd64.exe.gz
+
+# Configure home directory
+ENV HOME=/home
+RUN chgrp -R 0 /${HOME} && chmod -R g=u /${HOME}
+
+WORKDIR ${HOME}
+
+# Do not run as root
+USER 1001
+
+# Set the binary as the entrypoint of the container
+ENTRYPOINT ["/createtree"]

@@ -2,6 +2,8 @@ name: golangci-lint
 
 on:
   push:
+    branches:
+      - 'main'
   pull_request:
 
 permissions:
@@ -16,6 +18,10 @@ jobs:
       - uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6.3.0
         with:
           go-version-file: go.mod
+
+      - name: Remove RHTAS FIPS godebug for upstream Go # RHTAS FIPS - DO NOT REMOVE
+        run: go mod edit -dropgodebug=fips140
+
       - name: golangci-lint
         uses: golangci/golangci-lint-action@1e7e51e771db61008b38414a730f564565cf7c20 # v9.2.0
         with:

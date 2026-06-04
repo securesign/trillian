@@ -25,9 +25,12 @@ jobs:
         check-latest: true
         cache: true
 
+    - name: Remove RHTAS FIPS godebug for upstream Go # RHTAS FIPS - DO NOT REMOVE
+      run: go mod edit -dropgodebug=fips140
+
     - uses: golangci/golangci-lint-action@1e7e51e771db61008b38414a730f564565cf7c20 # v9.2.0
       with:
-        version: 'v2.6.0'
+        version: 'v2.10.1'
         args: ./storage/crdb
 
   unit-test:
@@ -40,6 +43,9 @@ jobs:
         go-version-file: go.mod
         check-latest: true
         cache: true
+
+    - name: Remove RHTAS FIPS godebug for upstream Go # RHTAS FIPS - DO NOT REMOVE
+      run: go mod edit -dropgodebug=fips140
 
     - name: Run tests
       run: go test -v ./storage/crdb/... ./quota/crdbqm/...
@@ -54,6 +60,9 @@ jobs:
         go-version-file: go.mod
         check-latest: true
         cache: true
+
+    - name: Remove RHTAS FIPS godebug for upstream Go # RHTAS FIPS - DO NOT REMOVE
+      run: go mod edit -dropgodebug=fips140
 
     - name: Build before tests
       run: go mod download && go build ./...
