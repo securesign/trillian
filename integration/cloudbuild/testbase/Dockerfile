@@ -1,11 +1,11 @@
 # This Dockerfile builds a base image for Trillan integration tests.
-FROM golang:1.24.3-bookworm@sha256:29d97266c1d341b7424e2f5085440b74654ae0b61ecdba206bc12d6264844e21
+FROM golang:1.26.1-bookworm@sha256:8e8aa801e8417ef0b5c42b504dd34db3db911bb73dba933bd8bde75ed815fdbb
 
 WORKDIR /testbase
 
 ARG GOFLAGS=""
 ENV GOFLAGS=$GOFLAGS
-ENV GOPATH /go
+ENV GOPATH=/go
 
 RUN apt-get update && apt-get install -y \
   build-essential \
@@ -27,13 +27,13 @@ RUN curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/i
 RUN curl https://binaries.cockroachdb.com/cockroach-v22.2.7.linux-amd64.tgz | tar -xz && cp -i cockroach-v22.2.7.linux-amd64/cockroach /usr/local/bin/
 
 RUN mkdir protoc && \
-    (cd protoc && \
-    PROTOC_VERSION="3.20.1" && \
-    PROTOC_ZIP="protoc-${PROTOC_VERSION}-linux-x86_64.zip" && \
-    wget "https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/${PROTOC_ZIP}" && \
-    unzip -o ${PROTOC_ZIP} -d /usr/local bin/protoc && \
-    unzip -o ${PROTOC_ZIP} -d /usr/local 'include/*' \
-    )
-ENV PATH /usr/local/bin:$PATH
+  (cd protoc && \
+  PROTOC_VERSION="3.20.1" && \
+  PROTOC_ZIP="protoc-${PROTOC_VERSION}-linux-x86_64.zip" && \
+  wget "https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/${PROTOC_ZIP}" && \
+  unzip -o ${PROTOC_ZIP} -d /usr/local bin/protoc && \
+  unzip -o ${PROTOC_ZIP} -d /usr/local 'include/*' \
+  )
+ENV PATH=/usr/local/bin:$PATH
 
-ENV PATH $GOPATH/bin:/testbase/protoc/bin:$PATH
+ENV PATH=$GOPATH/bin:/testbase/protoc/bin:$PATH
