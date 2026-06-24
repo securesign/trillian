@@ -11,12 +11,9 @@ ADD ./ ./
 
 RUN go mod download && \
     git config --global --add safe.directory /opt/app-root/src && \
+    git update-index --assume-unchanged Dockerfile.createtree.rh && \
     go build -mod=mod -o createtree -trimpath ./cmd/createtree && \
-    gzip -k createtree && \
-    make -f Build-clis.mak createtree-cross-platform && \
-    gzip createtree-darwin-amd64 && \
-    gzip createtree-darwin-arm64 && \
-    gzip createtree-windows-amd64.exe
+    git update-index --no-assume-unchanged Dockerfile.createtree.rh
 
 # Multi-Stage production build
 FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:12db9874bd753eb98b1ab3d840e75de5d6842ac0604fbd68c012adefe97140be AS deploy
@@ -32,17 +29,9 @@ LABEL summary="Provides the trillian createtree binary for creating merkel trees
 LABEL com.redhat.component="createtree"
 LABEL name="rhtas/createtree-rhel9"
 
-COPY --from=build /opt/app-root/src/createtree /
-COPY --from=build /opt/app-root/src/createtree.gz /usr/local/bin/createtree.gz
-COPY --from=build /opt/app-root/src/createtree-darwin-amd64.gz /usr/local/bin/createtree-darwin-amd64.gz
-COPY --from=build /opt/app-root/src/createtree-windows-amd64.exe.gz /usr/local/bin/createtree-windows-amd64.exe.gz
-COPY --from=build /opt/app-root/src/createtree-darwin-arm64.gz /usr/local/bin/createtree-darwin-arm64.gz
+COPY --from=build /opt/app-root/src/createtree /createtree
 
-RUN chown root:0 createtree && chmod g+wx createtree && \
-    chown root:0 /usr/local/bin/createtree.gz && chmod g+wx /usr/local/bin/createtree.gz && \
-    chown root:0 /usr/local/bin/createtree-darwin-amd64.gz && chmod g+wx /usr/local/bin/createtree-darwin-amd64.gz && \
-    chown root:0 /usr/local/bin/createtree-darwin-arm64.gz && chmod g+wx /usr/local/bin/createtree-darwin-arm64.gz && \
-    chown root:0 /usr/local/bin/createtree-windows-amd64.exe.gz && chmod g+wx /usr/local/bin/createtree-windows-amd64.exe.gz
+RUN chown root:0 createtree && chmod g+wx createtree
 
 # Configure home directory
 ENV HOME=/home
