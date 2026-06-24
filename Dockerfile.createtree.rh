@@ -11,9 +11,7 @@ ADD ./ ./
 
 RUN go mod download && \
     git config --global --add safe.directory /opt/app-root/src && \
-    git update-index --assume-unchanged Dockerfile.createtree.rh && \
-    go build -mod=mod -o createtree -trimpath ./cmd/createtree && \
-    git update-index --no-assume-unchanged Dockerfile.createtree.rh
+    go build -mod=mod -o createtree -trimpath ./cmd/createtree
 
 # Multi-Stage production build
 FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:12db9874bd753eb98b1ab3d840e75de5d6842ac0604fbd68c012adefe97140be AS deploy
