@@ -11,12 +11,7 @@ ADD ./ ./
 
 RUN go mod download && \
     git config --global --add safe.directory /opt/app-root/src && \
-    go build -mod=mod -o updatetree -trimpath ./cmd/updatetree && \
-    gzip -k updatetree && \
-    make -f Build-clis.mak updatetree-cross-platform && \
-    gzip updatetree-darwin-amd64 && \
-    gzip updatetree-darwin-arm64 && \
-    gzip updatetree-windows-amd64.exe
+    go build -mod=mod -o updatetree -trimpath ./cmd/updatetree
 
 # Multi-Stage production build
 FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:12db9874bd753eb98b1ab3d840e75de5d6842ac0604fbd68c012adefe97140be AS deploy
@@ -32,17 +27,9 @@ LABEL summary="Provides the trillian updatetree binary for updating merkel trees
 LABEL com.redhat.component="updatetree"
 LABEL name="rhtas/updatetree-rhel9"
 
-COPY --from=build /opt/app-root/src/updatetree /
-COPY --from=build /opt/app-root/src/updatetree.gz /usr/local/bin/updatetree.gz
-COPY --from=build /opt/app-root/src/updatetree-darwin-amd64.gz /usr/local/bin/updatetree-darwin-amd64.gz
-COPY --from=build /opt/app-root/src/updatetree-windows-amd64.exe.gz /usr/local/bin/updatetree-windows-amd64.exe.gz
-COPY --from=build /opt/app-root/src/updatetree-darwin-arm64.gz /usr/local/bin/updatetree-darwin-arm64.gz
+COPY --from=build /opt/app-root/src/updatetree /updatetree
 
-RUN chown root:0 updatetree && chmod g+wx updatetree && \
-    chown root:0 /usr/local/bin/updatetree.gz && chmod g+wx /usr/local/bin/updatetree.gz && \
-    chown root:0 /usr/local/bin/updatetree-darwin-amd64.gz && chmod g+wx /usr/local/bin/updatetree-darwin-amd64.gz && \
-    chown root:0 /usr/local/bin/updatetree-darwin-arm64.gz && chmod g+wx /usr/local/bin/updatetree-darwin-arm64.gz && \
-    chown root:0 /usr/local/bin/updatetree-windows-amd64.exe.gz && chmod g+wx /usr/local/bin/updatetree-windows-amd64.exe.gz
+RUN chown root:0 updatetree && chmod g+wx updatetree
 
 ##Configure home directory
 ENV HOME=/home
