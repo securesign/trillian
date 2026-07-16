@@ -5,12 +5,14 @@ ENV APP_ROOT=/opt/app-root \
     GOFIPS140=v1.0.0 \
     GOFLAGS="-buildvcs=false"
 
+USER root
 WORKDIR $APP_ROOT/src
 ADD go.mod go.sum ./
 ADD ./ ./
 
 RUN go mod download && \
     git config --global --add safe.directory /opt/app-root/src && \
+    go mod edit -godebug=fips140=auto && \
     go build -mod=mod -tags 'postgresql,mysql,k8s,no_openssl' -o createtree -trimpath ./cmd/createtree
 
 # Multi-Stage production build
