@@ -12,7 +12,7 @@ RUN git config --global --add safe.directory /opt/app-root/src
 # Add source code
 ADD ./ $APP_ROOT/src/
 
-RUN go build -mod=mod -tags no_openssl -v ./cmd/trillian_log_signer
+RUN go build -mod=mod -tags 'postgresql,mysql,k8s,no_openssl' -v ./cmd/trillian_log_signer
 
 # Multi-Stage production build
 FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:8d0a8fb39ec907e8ca62cdd24b62a63ca49a30fe465798a360741fde58437a23 AS deploy
