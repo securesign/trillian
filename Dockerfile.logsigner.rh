@@ -4,6 +4,7 @@ ENV GOPATH=$APP_ROOT
 ENV CGO_ENABLED=0
 ENV GOFIPS140=v1.0.0
 
+USER root
 WORKDIR $APP_ROOT/src/
 ADD go.mod go.sum $APP_ROOT/src/
 RUN go mod download
@@ -12,7 +13,8 @@ RUN git config --global --add safe.directory /opt/app-root/src
 # Add source code
 ADD ./ $APP_ROOT/src/
 
-RUN go build -mod=mod -tags no_openssl -v ./cmd/trillian_log_signer
+RUN go mod edit -godebug=fips140=auto && \
+    go build -mod=mod -tags 'postgresql,mysql,k8s,no_openssl' -v ./cmd/trillian_log_signer
 
 # Multi-Stage production build
 FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:062c52ff973065752b0965787649db2bcf551a6c727a00e95a3eb42cebadbdab AS deploy
