@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:8d0a8fb39ec907e8ca62cdd24b62a63ca49a30fe465798a360741fde58437a23
+FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:062c52ff973065752b0965787649db2bcf551a6c727a00e95a3eb42cebadbdab
 
 LABEL description="Netcat is a computer networking utility for reading from and writing to network connections using TCP or UDP."
 LABEL io.k8s.description="netcat is a computer networking utility for reading from and writing to network connections using TCP or UDP."
