@@ -1,4 +1,4 @@
-FROM registry.redhat.io/rhel9/mariadb-105@sha256:f4223f6a3fb592a4d406acafc7f8d4079162628aa0926c9652284a15b1041311
+FROM registry.redhat.io/rhel9/mariadb-105@sha256:74fcde40f9d9d5232b27ff78084761e77420482859dde5b1b31686d198d43044
 
 USER root
 
