@@ -1,4 +1,4 @@
-FROM registry.redhat.io/ubi9/go-toolset:9.8-1784090680@sha256:e1ff4f548dfca084c2318d11dccd7d30a75c81a3a4fd8abcebc42ea42dd683e8 AS build-cross-platform
+FROM registry.redhat.io/ubi9/go-toolset:9.8-1784751462@sha256:5f5c97d7e6d917b8328321bcf2c9d5700de65b72d434ecdbbba6f35aaebaad40 AS build-cross-platform
 ENV APP_ROOT=/opt/app-root \
     GOPATH=/opt/app-root \
     CGO_ENABLED=0 \
@@ -26,7 +26,7 @@ FROM --platform=linux/arm64   quay.io/securesign/trillian-updatetree@sha256:b851
 FROM --platform=linux/ppc64le quay.io/securesign/trillian-updatetree@sha256:7eccebd2a9c2829b6e0af8d75db7d1a4852c4d35401886c5eeaf7625c7b4e6fe AS updatetree-ppc64le
 FROM --platform=linux/s390x   quay.io/securesign/trillian-updatetree@sha256:fe921d5f1343cbe67d73e542c9204fd3c18a2d2f54687d9d2db626604dcedeb6 AS updatetree-s390x
 
-FROM registry.redhat.io/ubi9/go-toolset:9.8-1784090680@sha256:e1ff4f548dfca084c2318d11dccd7d30a75c81a3a4fd8abcebc42ea42dd683e8 AS packager
+FROM registry.redhat.io/ubi9/go-toolset:9.8-1784751462@sha256:5f5c97d7e6d917b8328321bcf2c9d5700de65b72d434ecdbbba6f35aaebaad40 AS packager
 USER root
 RUN mkdir -p /binaries
 
@@ -93,7 +93,7 @@ RUN tar -czf /binaries/updatetree_windows_amd64.tar.gz -C /tmp updatetree.exe &&
 RUN chmod -R a+rX /binaries
 
 # Final minimal image with all binaries
-FROM registry.redhat.io/ubi9/ubi-micro:9.8-1782840931@sha256:35de56a9413112f1474e392ebc35e0cf6f0fb484c8e8877bbae59b513694b41f
+FROM registry.redhat.io/ubi9/ubi-micro:9.8-1784702951@sha256:b1e86b97028b8fcfb6d85f997c39e6b6b67496163ef8d80d243220a4918e8bef
 
 LABEL description="Flat image containing createtree and updatetree CLI binaries for all platforms and architectures"
 LABEL io.k8s.description="Flat image containing createtree and updatetree CLI binaries for all platforms and architectures"
