@@ -19,10 +19,10 @@ FROM --platform=linux/arm64   quay.io/securesign/trillian-createtree@sha256:3fb7
 FROM --platform=linux/ppc64le quay.io/securesign/trillian-createtree@sha256:df67d4773d61ab1bb79c4f23d69425d7cc94a58aa613228e39bc545129245f5a AS createtree-ppc64le
 FROM --platform=linux/s390x   quay.io/securesign/trillian-createtree@sha256:cdc483035cbf53e9d1639ada67cbc65917b85e0210c2fc2631b12dad0194142b AS createtree-s390x
 
-FROM --platform=linux/amd64   quay.io/securesign/trillian-updatetree@sha256:185df57a3bae545757a5be9e17b43508a311593fe9f980b96f925360394444a3 AS updatetree-amd64
-FROM --platform=linux/arm64   quay.io/securesign/trillian-updatetree@sha256:4b78d82002c56855e03061ba76f05f08f22231e896365842c5163ff72353979f AS updatetree-arm64
-FROM --platform=linux/ppc64le quay.io/securesign/trillian-updatetree@sha256:da69c119da1f5c88783dcc03c11c6169a36f6698ef6b97a1ef1a5fb5e3bb405d AS updatetree-ppc64le
-FROM --platform=linux/s390x   quay.io/securesign/trillian-updatetree@sha256:e5ffedfec68291667117582435f10572555433c8a9e7f36d59b4e8f9a2f31b88 AS updatetree-s390x
+FROM --platform=linux/amd64   quay.io/securesign/trillian-updatetree@sha256:e11f83230f971334dddcee210133b051a2fab000a9119cb2f8b922979e3ef9a2 AS updatetree-amd64
+FROM --platform=linux/arm64   quay.io/securesign/trillian-updatetree@sha256:53e69cfa5cb9a70e9e9b84a6ec4b9323be379d826f2a9fb210193384833b8b06 AS updatetree-arm64
+FROM --platform=linux/ppc64le quay.io/securesign/trillian-updatetree@sha256:361f44eaf5c9bfeca2ff7e29b55920a0324437ebef1c60b4383ca011b0d83d92 AS updatetree-ppc64le
+FROM --platform=linux/s390x   quay.io/securesign/trillian-updatetree@sha256:64969f7bb08fdc4a1f621b9f17bad5bd3782ee9aa6bc13a3860386f245b34298 AS updatetree-s390x
 
 FROM registry.redhat.io/ubi9/go-toolset:9.8-1784751462@sha256:5f5c97d7e6d917b8328321bcf2c9d5700de65b72d434ecdbbba6f35aaebaad40 AS packager
 USER root
