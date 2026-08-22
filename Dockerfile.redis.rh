@@ -1,4 +1,4 @@
-FROM registry.redhat.io/rhel9/redis-6@sha256:336839f22a5f0665a3ec338c2db19e7a69212a9eeb5de44a40a45c577da4edcb
+FROM registry.redhat.io/rhel9/redis-6@sha256:e1f1423b4440608c5da8eb6a6b19f5944a4879fa575a441a949f84d828b5f847
 
 LABEL description="Securesign redis is built ontop of rhel9/redis-6 but accepts external connections and runs appendonly mode with full durability."
 LABEL io.k8s.description="Securesign redis is built ontop of rhel9/redis-6 but accepts external connections and runs appendonly mode with full durability."
