@@ -56,6 +56,7 @@ jobs:
         check-latest: true
         cache: true
 
+
     - name: Build before tests
       run: go mod download && go build ./...
     
