@@ -41,7 +41,9 @@ import (
 	"github.com/google/trillian/storage"
 	"github.com/google/trillian/util"
 	"github.com/google/trillian/util/clock"
+	oteltracing "github.com/sigstore/model-validation-operator/pkg/tracing"
 	clientv3 "go.etcd.io/etcd/client/v3"
+	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"google.golang.org/grpc"
 	"k8s.io/klog/v2"
 
@@ -70,6 +72,12 @@ var (
 	tracing          = flag.Bool("tracing", false, "If true opencensus Stackdriver tracing will be enabled. See https://opencensus.io/.")
 	tracingProjectID = flag.String("tracing_project_id", "", "project ID to pass to stackdriver. Can be empty for GCP, consult docs for other platforms.")
 	tracingPercent   = flag.Int("tracing_percent", 0, "Percent of requests to be traced. Zero is a special case to use the DefaultSampler")
+
+	// OpenTelemetry tracing flags.
+	otelTracingEnabled  = flag.Bool("tracing-enabled", false, "If true, OpenTelemetry tracing will be enabled with OTLP gRPC exporter")
+	otelTracingEndpoint = flag.String("tracing-endpoint", "", "OpenTelemetry collector endpoint (host:port). If empty, the SDK default (localhost:4317) is used")
+	otelTracingInsecure = flag.Bool("tracing-insecure", true, "If true, the OTLP gRPC connection will not use TLS")
+	otelTracingStdout   = flag.Bool("tracing-stdout", false, "If true, traces are exported to stdout instead of OTLP (useful for debugging)")
 
 	configFile = flag.String("config", "", "Config file containing flags, file contents can be overridden by command line flags")
 
@@ -106,6 +114,31 @@ func main() {
 		}
 		// Enable the server request counter tracing etc.
 		options = append(options, opts...)
+	}
+
+	// Initialize OpenTelemetry tracing if enabled.
+	if *otelTracingEnabled {
+		tracingOpts := []oteltracing.Option{oteltracing.WithServiceName("trillian-logserver")}
+		if *otelTracingInsecure {
+			tracingOpts = append(tracingOpts, oteltracing.WithInsecure(true))
+		}
+		if *otelTracingEndpoint != "" {
+			tracingOpts = append(tracingOpts, oteltracing.WithEndpoint(*otelTracingEndpoint))
+		}
+		if *otelTracingStdout {
+			tracingOpts = append(tracingOpts, oteltracing.WithStdoutExporter())
+		}
+		shutdown, err := oteltracing.SetupTracing(ctx, tracingOpts...)
+		if err != nil {
+			klog.Exitf("Failed to initialize OpenTelemetry tracing: %v", err)
+		}
+		defer func() {
+			if err := shutdown(ctx); err != nil {
+				klog.Errorf("Error shutting down tracing: %v", err)
+			}
+		}()
+		klog.Info("OpenTelemetry tracing enabled")
+		options = append(options, grpc.StatsHandler(otelgrpc.NewServerHandler()))
 	}
 
 	if *maxMsgSize > 0 {
