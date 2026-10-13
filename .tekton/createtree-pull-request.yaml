@@ -8,16 +8,16 @@ metadata:
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-cel-expression: event == "pull_request" && target_branch
-      == "main" && ( ".tekton/createtree-pull-request.yaml".pathChanged() || "Dockerfile.createtree.rh".pathChanged()
+      == "release-1.5" && ( ".tekton/createtree-pull-request.yaml".pathChanged() || "Dockerfile.createtree.rh".pathChanged()
       || "trigger-konflux-builds.txt".pathChanged() || "go.mod".pathChanged() || "go.sum".pathChanged()
       || "cmd/createtree/***".pathChanged() || "client/***".pathChanged() || "Build-clis.mak".pathChanged()
       )
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: create-tree
-    appstudio.openshift.io/component: create-tree
+    appstudio.openshift.io/application: create-tree-v1-5
+    appstudio.openshift.io/component: create-tree-v1-5
     pipelines.appstudio.openshift.io/type: build
-  name: create-tree-on-pull-request
+  name: create-tree-v1-5-on-pull-request
   namespace: rhtas-tenant
 spec:
   params:
@@ -73,7 +73,7 @@ spec:
           memory: 3Gi
       name: run-tests
   taskRunTemplate:
-    serviceAccountName: build-pipeline-create-tree
+    serviceAccountName: build-pipeline-create-tree-v1-5
   workspaces:
   - name: workspace
     volumeClaimTemplate:

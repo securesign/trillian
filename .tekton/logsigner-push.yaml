@@ -8,16 +8,16 @@ metadata:
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch
-      == "main"  && ( "go.mod".pathChanged() || "go.sum".pathChanged() || ".tekton/logsigner-pull-request.yaml".pathChanged()
+      == "release-1.5"  && ( "go.mod".pathChanged() || "go.sum".pathChanged() || ".tekton/logsigner-pull-request.yaml".pathChanged()
       || "Dockerfile.logsigner.rh".pathChanged() || "cmd/trillian_log_signer/***".pathChanged()
       || "storage/***".pathChanged()
       || "trigger-konflux-builds.txt".pathChanged() )
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: tas-components
-    appstudio.openshift.io/component: logsigner
+    appstudio.openshift.io/application: tas-components-v1-5
+    appstudio.openshift.io/component: logsigner-v1-5
     pipelines.appstudio.openshift.io/type: build
-  name: logsigner-on-push
+  name: logsigner-v1-5-on-push
   namespace: rhtas-tenant
 spec:
   params:
@@ -67,7 +67,7 @@ spec:
           memory: 3Gi
       name: run-tests
   taskRunTemplate:
-    serviceAccountName: build-pipeline-logsigner
+    serviceAccountName: build-pipeline-logsigner-v1-5
   workspaces:
   - name: git-auth
     secret:
