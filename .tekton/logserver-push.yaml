@@ -8,21 +8,21 @@ metadata:
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch
-      == "main" && ( "go.mod".pathChanged() || "go.sum".pathChanged() || ".tekton/logserver-push.yaml".pathChanged()
+      == "release-1.5" && ( "go.mod".pathChanged() || "go.sum".pathChanged() || ".tekton/logserver-push.yaml".pathChanged()
       || "Dockerfile.logserver.rh".pathChanged() || "cmd/trillian_log_server/***".pathChanged()
       || "storage/***".pathChanged()
       || "trigger-konflux-builds.txt".pathChanged() )
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: tas-components
-    appstudio.openshift.io/component: logserver
+    appstudio.openshift.io/application: tas-components-v1-5
+    appstudio.openshift.io/component: logserver-v1-5
     pipelines.appstudio.openshift.io/type: build
-  name: logserver-on-push
+  name: logserver-v1-5-on-push
   namespace: rhtas-tenant
 spec:
   params:
   - name: release-version
-    value: "1.5.0"
+    value: "1.5.1"
   - name: dockerfile
     value: Dockerfile.logserver.rh
   - name: git-url
@@ -67,7 +67,7 @@ spec:
           memory: 3Gi
       name: run-tests
   taskRunTemplate:
-    serviceAccountName: build-pipeline-logserver
+    serviceAccountName: build-pipeline-logserver-v1-5
   workspaces:
   - name: git-auth
     secret:
