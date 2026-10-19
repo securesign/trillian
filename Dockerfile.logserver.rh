@@ -1,0 +1,37 @@
+FROM registry.redhat.io/ubi9/go-toolset:9.8-1786522985@sha256:444e81b3e88d8a68b92a081a7b3abc7d3fed2450f8473ea6b3caebf3bb73a0b8 AS builder
+ENV APP_ROOT=/opt/app-root
+ENV GOPATH=$APP_ROOT
+ENV CGO_ENABLED=0
+ENV GOFIPS140=v1.0.0
+
+USER root
+WORKDIR $APP_ROOT/src/
+ADD go.mod go.sum $APP_ROOT/src/
+RUN go mod download
+RUN git config --global --add safe.directory /opt/app-root/src
+
+# Add source code
+ADD ./ $APP_ROOT/src/
+
+RUN go mod edit -godebug=fips140=auto && \
+    go build -mod=mod -tags 'postgresql,mysql,k8s,no_openssl' -v ./cmd/trillian_log_server
+
+# Multi-Stage production build
+FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:7c372902c8d211db2d25c8277ba534a73b92742a334874dced829a63b0f21221 AS deploy
+
+# Retrieve the binary from the previous stage
+COPY --from=builder /opt/app-root/src/trillian_log_server /
+COPY LICENSE /licenses/license.txt
+
+LABEL description="Trillian is an implementation of the concepts described in the Verifiable Data Structures white paper, which in turn is an extension and generalisation of the ideas which underpin Certificate Transparency."
+LABEL io.k8s.description="Trillian is an implementation of the concepts described in the Verifiable Data Structures white paper."
+LABEL io.k8s.display-name="trillian_log_server"
+LABEL io.openshift.tags="trillian-logserver trusted-signer"
+LABEL summary="Provides the trillian logserver binary for running trillian logserver"
+LABEL com.redhat.component="trillian_log_server"
+LABEL name="rhtas/trillian-logserver-rhel9"
+
+USER 65532:65532
+
+# Set the binary as the entrypoint of the container
+ENTRYPOINT ["/trillian_log_server"]
