@@ -3,8 +3,27 @@ name: Test PostgreSQL
 on:
   push:
     branches:
-      - master
+      - main
+      - 'release-*'
+    paths-ignore:
+      - 'Dockerfile.*'
+      - 'examples/**'
+      - 'deployment/**'
+      - 'scripts/gcb2slack/**'
+      - 'monitoring/**'
+      - 'docs/**'
+      - '**/*.md'
+      - '.tekton/**'
   pull_request:
+    paths-ignore:
+      - 'Dockerfile.*'
+      - 'examples/**'
+      - 'deployment/**'
+      - 'scripts/gcb2slack/**'
+      - 'monitoring/**'
+      - 'docs/**'
+      - '**/*.md'
+      - '.tekton/**'
   workflow_dispatch:
 
 permissions:
