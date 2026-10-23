@@ -2,7 +2,25 @@ name: golangci-lint
 
 on:
   push:
+    paths-ignore:
+      - 'Dockerfile.*'
+      - 'examples/**'
+      - 'deployment/**'
+      - 'scripts/gcb2slack/**'
+      - 'monitoring/**'
+      - 'docs/**'
+      - '**/*.md'
+      - '.tekton/**'
   pull_request:
+    paths-ignore:
+      - 'Dockerfile.*'
+      - 'examples/**'
+      - 'deployment/**'
+      - 'scripts/gcb2slack/**'
+      - 'monitoring/**'
+      - 'docs/**'
+      - '**/*.md'
+      - '.tekton/**'
 
 permissions:
   contents: read
