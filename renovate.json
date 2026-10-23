@@ -1,6 +1,75 @@
 {
-    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": [
-        "github>securesign/actions:centralRenovate.json"
-    ]
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "github>securesign/renovate-config//org-inherited-config.json"
+  ],
+  "enabledManagers": ["dockerfile", "gomod", "tekton", "custom.regex"],
+  "ignorePaths": [
+    "examples/**",
+    "integration/**",
+    "deployment/**",
+    "scripts/gcb2slack/**",
+    "monitoring/**",
+    "experimental/**",
+    "tools/**",
+    ".github/workflows/**"
+  ],
+  "ignoreDeps": [
+    "cloud.google.com/go/spanner",
+    "contrib.go.opencensus.io/exporter/stackdriver",
+    "github.com/apache/beam/sdks/v2",
+    "github.com/cockroachdb/cockroach-go/v2",
+    "github.com/fullstorydev/grpcurl",
+    "github.com/google/go-licenses/v2",
+    "github.com/letsencrypt/pkcs11key/v4",
+    "github.com/pseudomuto/protoc-gen-doc",
+    "go.etcd.io/etcd/client/v3",
+    "go.etcd.io/etcd/etcdctl/v3",
+    "go.etcd.io/etcd/server/v3",
+    "go.etcd.io/etcd/v3",
+    "google.golang.org/api",
+    "cloud.google.com/go",
+    "cloud.google.com/go/auth",
+    "cloud.google.com/go/auth/oauth2adapt",
+    "cloud.google.com/go/compute/metadata",
+    "cloud.google.com/go/iam",
+    "cloud.google.com/go/longrunning",
+    "cloud.google.com/go/monitoring",
+    "cloud.google.com/go/profiler",
+    "cloud.google.com/go/storage",
+    "cloud.google.com/go/trace"
+  ],
+  "packageRules": [
+    {
+      "description": "Disable GitHub Actions updates",
+      "matchManagers": ["github-actions"],
+      "enabled": false
+    },
+    {
+      "description": "Disable Terraform updates",
+      "matchManagers": ["terraform"],
+      "enabled": false
+    },
+    {
+      "description": "Disable NPM updates",
+      "matchManagers": ["npm"],
+      "enabled": false
+    },
+    {
+      "description": "Disable updates for upstream-only Dockerfiles",
+      "matchManagers": ["dockerfile"],
+      "matchFileNames": [
+        "examples/**",
+        "integration/**"
+      ],
+      "enabled": false
+    },
+    {
+      "description": "Disable updates for workflow files",
+      "matchFileNames": [
+        ".github/workflows/**"
+      ],
+      "enabled": false
+    }
+  ]
 }
