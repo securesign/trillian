@@ -1,0 +1,21 @@
+FROM registry.redhat.io/rhel9/mariadb-105@sha256:0c22a14e4a8f8bf9d5a12f9f274676ea6dd464bd61c3db935bdfcaed44eb4f71
+
+USER root
+
+COPY examples/deployment/docker/db_server/mysql.cnf /etc/mysql/conf.d/trillian.cnf
+COPY storage/mysql/schema/storage.sql /docker-entrypoint-initdb.d/storage.sql
+COPY 60-load-db.sh /usr/share/container-scripts/mysql/init/60-load-db.sh
+RUN chmod -R 775 /docker-entrypoint-initdb.d && \
+    chmod 644 /etc/mysql/conf.d/trillian.cnf && \
+    chmod 775 /usr/share/container-scripts/mysql/init/60-load-db.sh
+COPY LICENSE /licenses/license.txt
+USER 1001
+
+LABEL description="MariaDB is a community-developed, commercially supported fork of the MySQL relational database management system"
+LABEL io.k8s.description="MariaDB is a community-developed, commercially supported fork of the MySQL relational database management system"
+LABEL io.k8s.display-name="trillian_db"
+LABEL io.openshift.tags="trillian database trusted-signer"
+LABEL summary="Provides the backing database for running trillian"
+LABEL com.redhat.component="trillian_db"
+LABEL name="rhtas/trillian-database-rhel9"
+

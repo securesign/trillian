@@ -1,0 +1,110 @@
+FROM registry.redhat.io/ubi9/go-toolset:9.8-1792671270@sha256:edb9452603fa48e9882063f001ecd7d322add20f1564a4f05f38f6683be5ea94 AS build-cross-platform
+ENV APP_ROOT=/opt/app-root \
+    GOPATH=/opt/app-root \
+    CGO_ENABLED=0 \
+    GOFIPS140=v1.0.0 \
+    GOFLAGS="-buildvcs=false"
+
+USER root
+WORKDIR $APP_ROOT/src
+ADD go.mod go.sum ./
+ADD ./ ./
+
+RUN go mod download && \
+    git config --global --add safe.directory /opt/app-root/src && \
+    go mod edit -godebug=fips140=auto && \
+    make -f Build-clis.mak createtree-cross-platform && \
+    make -f Build-clis.mak updatetree-cross-platform
+
+FROM --platform=linux/amd64   quay.io/securesign/trillian-createtree@sha256:429b9e50a290ef11e43ba087f188d79291229911f923ad33789d00e08db1294b AS createtree-amd64
+FROM --platform=linux/arm64   quay.io/securesign/trillian-createtree@sha256:25c7ee28530944a65a28db11b2b7d808c0fd71dc10e836171247344c1c144578 AS createtree-arm64
+FROM --platform=linux/ppc64le quay.io/securesign/trillian-createtree@sha256:190d60540e2f8e512ba62bdaa3cfa7456bd035d03500af7a95a56da6ae50edce AS createtree-ppc64le
+FROM --platform=linux/s390x   quay.io/securesign/trillian-createtree@sha256:438a29c40fbf8f9678a3308998b85927e3d5ddf98ee4443232af804000cbbe33 AS createtree-s390x
+
+FROM --platform=linux/amd64   quay.io/securesign/trillian-updatetree@sha256:3075a437292a4a2cff075d46b388e6fbc39f6194981a254e8e8eba942ac62f3d AS updatetree-amd64
+FROM --platform=linux/arm64   quay.io/securesign/trillian-updatetree@sha256:41543e573ff82b0e7e07d1ed16c0b08d072ec370461e0442c748fa09ceec15f5 AS updatetree-arm64
+FROM --platform=linux/ppc64le quay.io/securesign/trillian-updatetree@sha256:22837befbd5a8b1f9b56c881d7b59d1c9d2d31ba7c1e60627b1134404cc3efe9 AS updatetree-ppc64le
+FROM --platform=linux/s390x   quay.io/securesign/trillian-updatetree@sha256:ded780819c8d6d61b2ad3b2d7b2af493bca56c7db98bd1c011709cffab887e03 AS updatetree-s390x
+
+FROM registry.redhat.io/ubi9/go-toolset:9.8-1792671270@sha256:edb9452603fa48e9882063f001ecd7d322add20f1564a4f05f38f6683be5ea94 AS packager
+USER root
+RUN mkdir -p /binaries
+
+# createtree: Native Linux binaries from each arch variant
+COPY --from=createtree-amd64 /createtree /tmp/createtree
+RUN tar -czf /binaries/createtree_linux_amd64.tar.gz -C /tmp createtree && \
+    rm /tmp/createtree
+
+COPY --from=createtree-arm64 /createtree /tmp/createtree
+RUN tar -czf /binaries/createtree_linux_arm64.tar.gz -C /tmp createtree && \
+    rm /tmp/createtree
+
+COPY --from=createtree-ppc64le /createtree /tmp/createtree
+RUN tar -czf /binaries/createtree_linux_ppc64le.tar.gz -C /tmp createtree && \
+    rm /tmp/createtree
+
+COPY --from=createtree-s390x /createtree /tmp/createtree
+RUN tar -czf /binaries/createtree_linux_s390x.tar.gz -C /tmp createtree && \
+    rm /tmp/createtree
+
+# createtree: Cross-compiled binaries
+COPY --from=build-cross-platform /opt/app-root/src/createtree-darwin-amd64 /tmp/createtree
+RUN tar -czf /binaries/createtree_darwin_amd64.tar.gz -C /tmp createtree && \
+    rm /tmp/createtree
+
+COPY --from=build-cross-platform /opt/app-root/src/createtree-darwin-arm64 /tmp/createtree
+RUN tar -czf /binaries/createtree_darwin_arm64.tar.gz -C /tmp createtree && \
+    rm /tmp/createtree
+
+COPY --from=build-cross-platform /opt/app-root/src/createtree-windows-amd64.exe /tmp/createtree.exe
+RUN tar -czf /binaries/createtree_windows_amd64.tar.gz -C /tmp createtree.exe && \
+    rm /tmp/createtree.exe
+
+# updatetree: Native Linux binaries from each arch variant
+COPY --from=updatetree-amd64 /updatetree /tmp/updatetree
+RUN tar -czf /binaries/updatetree_linux_amd64.tar.gz -C /tmp updatetree && \
+    rm /tmp/updatetree
+
+COPY --from=updatetree-arm64 /updatetree /tmp/updatetree
+RUN tar -czf /binaries/updatetree_linux_arm64.tar.gz -C /tmp updatetree && \
+    rm /tmp/updatetree
+
+COPY --from=updatetree-ppc64le /updatetree /tmp/updatetree
+RUN tar -czf /binaries/updatetree_linux_ppc64le.tar.gz -C /tmp updatetree && \
+    rm /tmp/updatetree
+
+COPY --from=updatetree-s390x /updatetree /tmp/updatetree
+RUN tar -czf /binaries/updatetree_linux_s390x.tar.gz -C /tmp updatetree && \
+    rm /tmp/updatetree
+
+# updatetree: Cross-compiled binaries
+COPY --from=build-cross-platform /opt/app-root/src/updatetree-darwin-amd64 /tmp/updatetree
+RUN tar -czf /binaries/updatetree_darwin_amd64.tar.gz -C /tmp updatetree && \
+    rm /tmp/updatetree
+
+COPY --from=build-cross-platform /opt/app-root/src/updatetree-darwin-arm64 /tmp/updatetree
+RUN tar -czf /binaries/updatetree_darwin_arm64.tar.gz -C /tmp updatetree && \
+    rm /tmp/updatetree
+
+COPY --from=build-cross-platform /opt/app-root/src/updatetree-windows-amd64.exe /tmp/updatetree.exe
+RUN tar -czf /binaries/updatetree_windows_amd64.tar.gz -C /tmp updatetree.exe && \
+    rm /tmp/updatetree.exe
+
+RUN chmod -R a+rX /binaries
+
+# Final minimal image with all binaries
+FROM registry.redhat.io/ubi9/ubi-micro:9.8-1791895366@sha256:5be877a2a280ae36eb9ab80ca4efb28bbf77c57abbba38137cdc37a03b8465e6
+
+LABEL description="Flat image containing createtree and updatetree CLI binaries for all platforms and architectures"
+LABEL io.k8s.description="Flat image containing createtree and updatetree CLI binaries for all platforms and architectures"
+LABEL io.opencontainers.image.description="Flat image containing createtree and updatetree CLI binaries for all platforms and architectures"
+LABEL io.k8s.display-name="Trillian CLI stack image for Red Hat Trusted Artifact Signer"
+LABEL io.openshift.tags="trillian createtree updatetree trusted-artifact-signer cli-stack"
+LABEL summary="Provides all trillian CLI binaries (createtree, updatetree) as tar.gz archives for CDN distribution."
+LABEL com.redhat.component="trillian-cli-stack"
+LABEL name="rhtas/trillian-cli-stack"
+
+COPY --from=packager /binaries/ /binaries/
+COPY --from=createtree-amd64 /licenses/ /licenses/
+
+USER 65532:65532

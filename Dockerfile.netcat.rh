@@ -1,0 +1,9 @@
+FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:c4c285d42941ebb2bd4da878479008e1e4536bb599aad1dbe568f89de9053661
+
+LABEL description="Netcat is a computer networking utility for reading from and writing to network connections using TCP or UDP."
+LABEL io.k8s.description="netcat is a computer networking utility for reading from and writing to network connections using TCP or UDP."
+LABEL io.k8s.display-name="trillian_netcat"
+LABEL io.openshift.tags="trillian netcat trusted-signer"
+LABEL summary="Provides the trillian netcat binary for running trillian netcat"
+
+RUN microdnf -y install nc
