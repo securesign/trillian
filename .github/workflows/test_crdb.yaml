@@ -3,8 +3,27 @@ name: Test CRDB
 on:
   push:
     branches:
-      - master
+      - main
+      - 'release-*'
+    paths-ignore:
+      - 'Dockerfile.*'
+      - 'examples/**'
+      - 'deployment/**'
+      - 'scripts/gcb2slack/**'
+      - 'monitoring/**'
+      - 'docs/**'
+      - '**/*.md'
+      - '.tekton/**'
   pull_request:
+    paths-ignore:
+      - 'Dockerfile.*'
+      - 'examples/**'
+      - 'deployment/**'
+      - 'scripts/gcb2slack/**'
+      - 'monitoring/**'
+      - 'docs/**'
+      - '**/*.md'
+      - '.tekton/**'
   workflow_dispatch:
 
 permissions:
@@ -41,6 +60,7 @@ jobs:
         check-latest: true
         cache: true
 
+
     - name: Run tests
       run: go test -v ./storage/crdb/... ./quota/crdbqm/...
 
@@ -54,6 +74,7 @@ jobs:
         go-version-file: go.mod
         check-latest: true
         cache: true
+
 
     - name: Build before tests
       run: go mod download && go build ./...
