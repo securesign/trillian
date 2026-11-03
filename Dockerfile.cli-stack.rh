@@ -16,10 +16,10 @@ RUN go mod download && \
     make -f Build-clis.mak createtree-cross-platform && \
     make -f Build-clis.mak updatetree-cross-platform
 
-FROM --platform=linux/amd64   quay.io/securesign/trillian-createtree@sha256:429b9e50a290ef11e43ba087f188d79291229911f923ad33789d00e08db1294b AS createtree-amd64
-FROM --platform=linux/arm64   quay.io/securesign/trillian-createtree@sha256:25c7ee28530944a65a28db11b2b7d808c0fd71dc10e836171247344c1c144578 AS createtree-arm64
-FROM --platform=linux/ppc64le quay.io/securesign/trillian-createtree@sha256:190d60540e2f8e512ba62bdaa3cfa7456bd035d03500af7a95a56da6ae50edce AS createtree-ppc64le
-FROM --platform=linux/s390x   quay.io/securesign/trillian-createtree@sha256:438a29c40fbf8f9678a3308998b85927e3d5ddf98ee4443232af804000cbbe33 AS createtree-s390x
+FROM --platform=linux/amd64   quay.io/securesign/trillian-createtree@sha256:3012ce3c3d10d3161fa85e6325a464c19bc539b98edbfe773e63f97004e2b989 AS createtree-amd64
+FROM --platform=linux/arm64   quay.io/securesign/trillian-createtree@sha256:8977c33b64d8f0ea5b8119affcf24de7389c3f2fac77af20f3c3c83f5c3714c2 AS createtree-arm64
+FROM --platform=linux/ppc64le quay.io/securesign/trillian-createtree@sha256:4b13b4009c39052ea175bc180052d434fab34d1afb752aa9c0995fb52f1ca83d AS createtree-ppc64le
+FROM --platform=linux/s390x   quay.io/securesign/trillian-createtree@sha256:79494aec89642b1d5d864facdb2c14b4f5086489ef2a7c9c1a91c8e31204b3ec AS createtree-s390x
 
 FROM --platform=linux/amd64   quay.io/securesign/trillian-updatetree@sha256:c9dd4b970562e6ee2bfd1774cc3c647cda2f06fcff1ef0d92dd310c567bd80f1 AS updatetree-amd64
 FROM --platform=linux/arm64   quay.io/securesign/trillian-updatetree@sha256:24fb018449159747f3f432c9eaa462b9b9d2f00f71a10818b64e3944f54a12d6 AS updatetree-arm64
