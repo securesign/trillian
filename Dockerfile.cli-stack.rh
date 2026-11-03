@@ -1,4 +1,4 @@
-FROM registry.redhat.io/ubi9/go-toolset:9.8-1793294290@sha256:cab9089469c52029e4d8a4e9f717e87c51ab22eed448ebcada101b811f97dfe7 AS build-cross-platform
+FROM registry.redhat.io/ubi9/go-toolset:9.8-1793621864@sha256:5f0dead6a152de46a19f51322ea8e06d0d9f282a4937d663cf5a226cb8744bc8 AS build-cross-platform
 ENV APP_ROOT=/opt/app-root \
     GOPATH=/opt/app-root \
     CGO_ENABLED=0 \
@@ -24,7 +24,7 @@ FROM --platform=linux/arm64   quay.io/securesign/trillian-updatetree@sha256:0b4a
 FROM --platform=linux/ppc64le quay.io/securesign/trillian-updatetree@sha256:127b0019ad2214cda3c4e4a7f038b53c051a9da9de74f0625e6b85c346011132 AS updatetree-ppc64le
 FROM --platform=linux/s390x   quay.io/securesign/trillian-updatetree@sha256:6a99fda4eeb810fb433f88f0723051bae4d78465a086353b387bba26113f256c AS updatetree-s390x
 
-FROM registry.redhat.io/ubi9/go-toolset:9.8-1793294290@sha256:cab9089469c52029e4d8a4e9f717e87c51ab22eed448ebcada101b811f97dfe7 AS packager
+FROM registry.redhat.io/ubi9/go-toolset:9.8-1793621864@sha256:5f0dead6a152de46a19f51322ea8e06d0d9f282a4937d663cf5a226cb8744bc8 AS packager
 USER root
 RUN mkdir -p /binaries
 
