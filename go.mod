@@ -10,18 +10,18 @@ require (
 	github.com/cockroachdb/cockroach-go/v2 v2.4.3
 	github.com/fullstorydev/grpcurl v1.9.3
 	github.com/go-redis/redis v6.15.9+incompatible
-	github.com/go-sql-driver/mysql v1.9.3
+	github.com/go-sql-driver/mysql v1.10.1
 	github.com/golang/mock v1.7.0-rc.1
 	github.com/google/btree v1.1.3
 	github.com/google/go-cmp v0.7.0
 	github.com/google/go-licenses/v2 v2.0.1
-	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
+	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.4
 	github.com/jackc/pgerrcode v0.0.0-20250907135507-afb5586c32a6
-	github.com/jackc/pgx/v5 v5.9.2
+	github.com/jackc/pgx/v5 v5.12.0
 	github.com/letsencrypt/pkcs11key/v4 v4.0.0
-	github.com/lib/pq v1.12.0
-	github.com/prometheus/client_golang v1.23.2
-	github.com/prometheus/client_model v0.6.2
+	github.com/lib/pq v1.12.3
+	github.com/prometheus/client_golang v1.25.0
+	github.com/prometheus/client_model v0.6.3
 	github.com/pseudomuto/protoc-gen-doc v1.5.1
 	github.com/transparency-dev/merkle v0.0.2
 	go.etcd.io/etcd/client/v3 v3.6.14
@@ -29,22 +29,22 @@ require (
 	go.etcd.io/etcd/server/v3 v3.6.14
 	go.etcd.io/etcd/v3 v3.6.14
 	go.opencensus.io v0.24.0
-	golang.org/x/sync v0.23.0
-	golang.org/x/sys v0.48.0
-	golang.org/x/tools v0.49.0
+	golang.org/x/sync v0.25.0
+	golang.org/x/sys v0.50.0
+	golang.org/x/tools v0.52.0
 	google.golang.org/api v0.273.0
-	google.golang.org/genproto v0.0.0-20260319201613-d00831a3d3e7
-	google.golang.org/genproto/googleapis/api v0.0.0-20260803160001-6ac0973c030d
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20260803160001-6ac0973c030d
-	google.golang.org/grpc v1.83.2
-	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.6.1
-	google.golang.org/protobuf v1.36.11
-	gopkg.in/yaml.v2 v2.4.0
-	k8s.io/api v0.35.3
-	k8s.io/apimachinery v0.35.3
-	k8s.io/client-go v0.35.3
+	google.golang.org/genproto v0.0.0-20261110000943-09e21b237f2c
+	google.golang.org/genproto/googleapis/api v0.0.0-20261110000943-09e21b237f2c
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20261110000943-09e21b237f2c
+	google.golang.org/grpc v1.85.0
+	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.6.2
+	google.golang.org/protobuf v1.36.12
+	gopkg.in/yaml.v3 v3.0.1
+	k8s.io/api v0.37.2
+	k8s.io/apimachinery v0.37.2
+	k8s.io/client-go v0.37.2
 	k8s.io/klog/v2 v2.140.0
-	k8s.io/utils v0.0.0-20260319190234-28399d86e0b5
+	k8s.io/utils v0.0.0-20261023123148-ca04ba58ecab
 )
 
 require (
@@ -232,4 +232,4 @@ require (
 	sigs.k8s.io/yaml v1.6.0 // indirect
 )
 
-replace go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc => go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.45.0
+replace go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc => go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.47.0
