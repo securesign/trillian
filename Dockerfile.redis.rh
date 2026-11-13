@@ -1,4 +1,4 @@
-FROM registry.redhat.io/rhel9/redis-6@sha256:cb9f35878853b1980dbd6305d162f1e47256821d51c6e24cc71b6d59db02cc7a
+FROM registry.redhat.io/rhel9/redis-6@sha256:d0a38d4c030b4ab759333c74710efec0fb03959b8a3212d4bccfa548638470a5
 
 USER root
 
