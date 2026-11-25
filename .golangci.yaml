@@ -14,13 +14,13 @@ linters:
     rules:
       - linters:
           - staticcheck
-        text: 'SA1019: grpc.Dial is deprecated: use NewClient instead'
+        text: 'SA1019: .*grpc\.Dial is deprecated'
       - linters:
           - staticcheck
-        text: 'SA1019: grpc.DialContext is deprecated: use NewClient instead'
+        text: 'SA1019: .*grpc\.DialContext is deprecated'
       - linters:
           - staticcheck
-        text: 'SA1019: grpc.WithBlock is deprecated: this DialOption is not supported by NewClient'
+        text: 'SA1019: .*grpc\.WithBlock is deprecated'
     paths:
       - types/internal/tls/tls.go
       - third_party$
